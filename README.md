@@ -1,6 +1,12 @@
 # CATopalian True AI
 From Heaven to Earth, here is TRUE AI
 
+# TRUE AI Centered
+![True AI Diagram Centered 2025-06-27](src/files/2025-06-27/CATopalian_True_AI_Centered/CATopalian_True_AI_Centered.png)  
+
+> #
+
+# TRUE AI
 ![True AI Diagram 2025-06-26](src/files/2025-06-26/CATopalian_True_AI.png)  
 
 ---
