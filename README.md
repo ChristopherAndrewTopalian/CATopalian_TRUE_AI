@@ -11,6 +11,15 @@ From Heaven to Earth, here is TRUE AI
 
 ---
 
+# Historial Evidence that I,  Christopher Andrew Topalian, Created TRUE AI
+
+> ## DATE: 2008-10-07-(14:15)
+![2008-10-07-(1415)](src/files/2008-10-07/2008-10-07-(1415)-Number-of-Possibilities.PNG)  
+
+
+
+---
+
 How to Download this Tutorial
 1. Click the green Code Button on this github page
 2. Choose Download ZIP
