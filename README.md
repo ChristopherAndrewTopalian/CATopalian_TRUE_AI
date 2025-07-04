@@ -198,6 +198,14 @@ From Heaven to Earth, here is TRUE AI
 
 ---
 
+# Logic Big Planet
+* Little Big Planet 2 was very useful for their Inversion Button in Confirming all gates opposites.
+
+> ## DATE: 2011-02-07-(06-14-24)
+![2011-02-07-(06-14-24)](src/files/2011-02-07/2011-02-07-(06-14-24).PNG)  
+
+---
+
 How to Download this Tutorial
 1. Click the green Code Button on this github page
 2. Choose Download ZIP
