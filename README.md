@@ -150,6 +150,9 @@ From Heaven to Earth, here is TRUE AI
 > ## DATE: 2011-01-29-(12-04)
 ![2011-01-29-(12-04)](src/files/2011-01-29/2011-01-29-(12-04).PNG)  
 
+> ## DATE: 2011-01-29-(12-08)
+![2011-01-29-(12-08)](src/files/2011-01-29/2011-01-29-(12-08).PNG)  
+
 ---
 
 How to Download this Tutorial
