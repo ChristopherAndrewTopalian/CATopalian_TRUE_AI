@@ -79,6 +79,9 @@ From Heaven to Earth, here is TRUE AI
 > ## DATE: 2008-10-13-(09-03)
 ![2008-10-13-(09-03)](src/files/2008-10-13/2008-10-13-(09-03).PNG)  
 
+> ## DATE: 2008-10-13-(09-17)
+![2008-10-13-(09-17)](src/files/2008-10-13/2008-10-13-(09-17).PNG)  
+
 ---
 
 How to Download this Tutorial
