@@ -17,7 +17,7 @@ From Heaven to Earth, here is TRUE AI
 ![2008-10-07-(13-45)](src/files/2008-10-07/2008-10-07-(13-45).PNG)  
 
 > ## DATE: 2008-10-07-(14:15)
-![2008-10-07-(1415)](src/files/2008-10-07/2008-10-07-(1415)-Number-of-Possibilities.PNG)  
+![2008-10-07-(1415)](src/files/2008-10-07/2008-10-07-(14-15)-Number-of-Possibilities.PNG)  
 
 
 
