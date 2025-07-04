@@ -121,7 +121,7 @@ From Heaven to Earth, here is TRUE AI
 > ## DATE: 2008-10-08-(01-18)
 ![2008-10-08-(01-18)](src/files/2008-10-08/2008-10-08-(01-18).PNG)  
 
-# Topalian Diagrams
+# CATopalian Diagrams
 
 > ## DATE: 2011-01-29-(10-16)
 ![2011-01-29-(10-16)](src/files/2011-01-29/2011-01-29-(10-16).PNG)  
@@ -134,6 +134,9 @@ From Heaven to Earth, here is TRUE AI
 
 > ## DATE: 2011-01-29-(11-47)
 ![2011-01-29-(11-47)](src/files/2011-01-29/2011-01-29-(11-47).PNG)  
+
+> ## DATE: 2011-01-29-(11-51)
+![2011-01-29-(11-51)](src/files/2011-01-29/2011-01-29-(11-51).PNG)  
 
 ---
 
