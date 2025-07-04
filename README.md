@@ -173,6 +173,13 @@ From Heaven to Earth, here is TRUE AI
 
 ---
 
+## True AI Logic Summarized
+
+> ## DATE: 2011-02-01-(05-03)
+![2011-02-01-(05-03)](src/files/2011-02-01/2011-02-01-(05-03).PNG)  
+
+---
+
 How to Download this Tutorial
 1. Click the green Code Button on this github page
 2. Choose Download ZIP
