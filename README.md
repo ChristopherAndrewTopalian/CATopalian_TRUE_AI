@@ -281,6 +281,12 @@ From Heaven to Earth, here is TRUE AI
 
 ---
 
+# TRUE AI DIAGRAM
+> ## DATE: 2020-02-07-(15-40-22)
+![2011-02-07-(13-40-54)](src/files/2020-02-07/2020-02-07-(15-40-22).PNG)  
+
+---
+
 How to Download this Tutorial
 1. Click the green Code Button on this github page
 2. Choose Download ZIP
