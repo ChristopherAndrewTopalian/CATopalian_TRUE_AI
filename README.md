@@ -371,6 +371,12 @@ From Heaven to Earth, here is TRUE AI
 
 ---
 
+> ## DATE: 2025-11-19
+
+[TRUE AI 18-gon System](src/files/2025-11-19/CATopalian_TRUE_AI_18_Gon_System.md)
+
+---
+
 Video Evidence: https://www.youtube.com/watch?v=J8nDbw7VH3s
 
 https://www.youtube.com/watch?v=Fw9i3Bg6mqk
