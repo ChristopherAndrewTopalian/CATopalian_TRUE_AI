@@ -381,6 +381,8 @@ From Heaven to Earth, here is TRUE AI
 
 [2025-11-24-a](src/files/2025-11-24/2025-11-24-a.md)
 
+[2025-11-24-b](src/files/2025-11-24/2025-11-24-b.md)
+
 ---
 
 Video Evidence: https://www.youtube.com/watch?v=J8nDbw7VH3s
