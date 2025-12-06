@@ -369,6 +369,8 @@ From Heaven to Earth, here is TRUE AI
 
 ![2025-11-15](src/files/2025-11-15/CATopalian_True_AI_4D_Hypercube_Tesseract/012/catopalian_true_ai_4D_hypercube_tesseract_012.PNG)
 
+https://www.youtube.com/watch?v=Gl2MV5YDDdo
+
 ---
 
 > ## DATE: 2025-11-19
