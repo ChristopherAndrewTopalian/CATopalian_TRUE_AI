@@ -485,6 +485,12 @@ https://www.youtube.com/watch?v=Gl2MV5YDDdo
 
 ---
 
+### CATopalian_True_AI_Centered_with_Conditional_Labels
+
+![CATopalian_True_AI_Centered_with_Conditional_Labels](src/files/2025-12-09/textures/CATopalian_True_AI_Centered_with_Conditional_Labels.png)
+
+---
+
 Video Evidence: https://www.youtube.com/watch?v=J8nDbw7VH3s
 
 https://www.youtube.com/watch?v=Fw9i3Bg6mqk
