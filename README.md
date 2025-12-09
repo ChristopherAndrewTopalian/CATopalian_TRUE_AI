@@ -481,7 +481,7 @@ https://www.youtube.com/watch?v=Gl2MV5YDDdo
 
 ---
 
-![CATopalian_True_AI_Relationships](src/files/2025-12-09/textures/CATopalian_True_AI_Relationships/CATopalian_True_AI_Relationships.PNG)
+![CATopalian_True_AI_Relationships](src/files/2025-12-09/textures/CATopalian_True_AI_Relationships/CATopalian_True_AI_Relationships.png)
 
 ---
 
