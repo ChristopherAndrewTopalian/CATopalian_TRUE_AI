@@ -481,6 +481,22 @@ https://www.youtube.com/watch?v=Gl2MV5YDDdo
 
 ---
 
+![CATopalian_True_AI_Relationships](src/files/2025-12-09/textures/CATopalian_True_AI_Relationships/CATopalian_True_AI_Relationships.png)
+
+---
+
+### CATopalian_True_AI_Centered_with_Conditional_Labels
+
+![CATopalian_True_AI_Centered_with_Conditional_Labels](src/files/2025-12-09/textures/CATopalian_True_AI_Centered_with_Conditional_Labels.png)
+
+---
+
+> ## DATE: 2025-12-19
+
+Video: https://www.youtube.com/watch?v=101e9NgxXts  True Artificial Intelligence 4D Hypercube Tesseract Neural Network 
+
+Video: https://www.youtube.com/watch?v=escu_vihEic   True AI Hypercylinder Neural Network 
+
 ---
 
 > ## DATE: 2025-12-20
@@ -547,13 +563,7 @@ https://www.youtube.com/watch?v=Gl2MV5YDDdo
 
 ---
 
-![CATopalian_True_AI_Relationships](src/files/2025-12-09/textures/CATopalian_True_AI_Relationships/CATopalian_True_AI_Relationships.png)
-
 ---
-
-### CATopalian_True_AI_Centered_with_Conditional_Labels
-
-![CATopalian_True_AI_Centered_with_Conditional_Labels](src/files/2025-12-09/textures/CATopalian_True_AI_Centered_with_Conditional_Labels.png)
 
 Video: The True AI Multiverse https://www.youtube.com/watch?v=JT9SBWsBrX4
 
