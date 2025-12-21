@@ -523,6 +523,8 @@ https://www.youtube.com/watch?v=Gl2MV5YDDdo
 
 [2025-12-20-s](src/files/2025-12-20/2025-12-20-s.md)  
 
+[2025-12-20-t](src/files/2025-12-20/2025-12-20-t.md)  
+
 ---
 
 ![CATopalian_True_AI_Relationships](src/files/2025-12-09/textures/CATopalian_True_AI_Relationships/CATopalian_True_AI_Relationships.png)
