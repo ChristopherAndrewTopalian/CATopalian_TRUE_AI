@@ -575,6 +575,8 @@ Video: https://www.youtube.com/watch?v=escu_vihEic   True AI Hypercylinder Neura
 
 [2026-01-26-e](src/files/2026-01-26/2026-01-26-e.md)  
 
+[2026-01-26-f](src/files/2026-01-26/2026-01-26-f.md)  
+
 ---
 
 Video: The True AI Multiverse https://www.youtube.com/watch?v=JT9SBWsBrX4
