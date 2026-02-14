@@ -751,6 +751,25 @@ Video: https://www.youtube.com/watch?v=escu_vihEic   True AI Hypercylinder Neura
 
 ---
 
+> ## DATE: 2026-02-12
+https://www.youtube.com/watch?v=1ZBLrtI0OTg
+
+https://www.youtube.com/watch?v=JcqIqDZ1xDU
+
+https://www.youtube.com/watch?v=bk70h5g1Ikw
+
+---
+
+> ## DATE: 2026-02-14
+
+![CATopalian_True_AI](src/files/2026-02-14/textures/CATopalian_True_AI.png)
+
+[2026-02-14-a](src/files/2026-02-14/2026-02-14-a.md)  
+
+https://www.youtube.com/watch?v=h9WJy5o5c44
+
+---
+
 Video: The True AI Multiverse https://www.youtube.com/watch?v=JT9SBWsBrX4
 
 ---
