@@ -777,7 +777,10 @@ https://www.youtube.com/watch?v=h9WJy5o5c44
 ---
 
 > ## DATE: 2026-02-26
-![CATopalian True AI](src/files/2026-02-26/2026-02-26-a.md)
+
+[2026-02-26-a](src/files/2026-02-26/2026-02-26-a.md)
+
+[2026-02-26-b](src/files/2026-02-26/2026-02-26-b.md)
 
 ---
 
