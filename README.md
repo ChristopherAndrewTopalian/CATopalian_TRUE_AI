@@ -892,6 +892,8 @@ https://www.youtube.com/watch?v=h9WJy5o5c44
 
 [2026-04-04-f](src/files/2026-04-04/2026-04-04-f.md)
 
+[2026-04-04-g](src/files/2026-04-04/2026-04-04-g.md)
+
 ---
 
 Video: The True AI Multiverse https://www.youtube.com/watch?v=JT9SBWsBrX4
