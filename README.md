@@ -906,6 +906,12 @@ https://www.youtube.com/watch?v=h9WJy5o5c44
 
 ---
 
+---
+
+> ## DATE: 2026-04-06
+
+[true_ai_16_gates_relationships](src/files/2026-04-06/html/true_ai_16_gates_relationships.html)
+
 Video: The True AI Multiverse https://www.youtube.com/watch?v=JT9SBWsBrX4
 
 ---
