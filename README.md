@@ -918,6 +918,8 @@ https://www.youtube.com/watch?v=h9WJy5o5c44
 
 [2026-04-06-c](src/files/2026-04-06/2026-04-06-c.md)
 
+[2026-04-06-d](src/files/2026-04-06/2026-04-06-d.md)
+
 ---
 
 Video: The True AI Multiverse https://www.youtube.com/watch?v=JT9SBWsBrX4
