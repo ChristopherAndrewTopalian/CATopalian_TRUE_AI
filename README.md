@@ -932,6 +932,22 @@ https://www.youtube.com/watch?v=h9WJy5o5c44
 
 ---
 
+> ## DATE: 2026-04-013
+
+[2026-04-13-a](src/files/2026-04-13/2026-04-13-a.md)
+
+[2026-04-13-b](src/files/2026-04-13/2026-04-13-b.md)
+
+[2026-04-13-c](src/files/2026-04-13/2026-04-13-c.md)
+
+[2026-04-13-d](src/files/2026-04-13/2026-04-13-d.md)
+
+[2026-04-13-e](src/files/2026-04-13/2026-04-13-e.md)
+
+[2026-04-13-f](src/files/2026-04-13/2026-04-13-f.md)
+
+---
+
 Video: The True AI Multiverse https://www.youtube.com/watch?v=JT9SBWsBrX4
 
 ---
