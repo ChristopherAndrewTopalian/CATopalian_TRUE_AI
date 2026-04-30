@@ -1024,6 +1024,12 @@ https://www.youtube.com/watch?v=h9WJy5o5c44
 
 [2026-04-30-b](src/files/2026-04-30/2026-04-30-b.md)
 
+[2026-04-30-c](src/files/2026-04-30/2026-04-30-c.md)
+
+[2026-04-30-d](src/files/2026-04-30/2026-04-30-d.md)
+
+[catopalian_true_ai.js](src/files/2026-04-30/js/catopalian_true_ai.js)
+
 ---
 
 Video Playlist: True AI 4D Hypercube Tesseract Neural Network
