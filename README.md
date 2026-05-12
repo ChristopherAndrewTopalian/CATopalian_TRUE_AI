@@ -1030,6 +1030,8 @@ https://www.youtube.com/watch?v=h9WJy5o5c44
 
 [catopalian_true_ai.js](src/files/2026-04-30/js/catopalian_true_ai.js)
 
+[catopalian_true_ai.js](src/files/2026-04-30/js/002/catopalian_true_ai.js)
+
 [2026-04-30-e](src/files/2026-04-30/2026-04-30-e.md)
 
 [2026-04-30-f](src/files/2026-04-30/2026-04-30-f.md)
