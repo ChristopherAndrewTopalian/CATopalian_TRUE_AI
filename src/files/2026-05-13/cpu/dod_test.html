@@ -1,0 +1,86 @@
+<!-- Dedicated to God the Father -->
+<!-- All Rights Reserved Christopher Andrew Topalian Copyright 2000-2026 -->
+<!-- https://github.com/ChristopherTopalian -->
+<!-- https://github.com/ChristopherAndrewTopalian -->
+<!-- CATopalian_JavaScript.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DOD Architecture Benchmark</title>
+</head>
+<body style="background-color: #1E1E1E; color: #00FF00; font-family: monospace; padding: 20px;">
+    
+    <h2>The 1,000,000 Entity Benchmark</h2>
+    <p>Press F12 to open the Console, then click the button.</p>
+    <button onclick="runBenchmark()" style="padding: 10px 20px; font-size: 16px;">RUN STRESS TEST</button>
+
+    <script>
+        const ENTITY_COUNT = 1000000;
+        const FRAMES_TO_SIMULATE = 100;
+
+        function runBenchmark() 
+        {
+            console.log(`--- SIMULATING ${ENTITY_COUNT} ENTITIES FOR ${FRAMES_TO_SIMULATE} FRAMES ---`);
+
+            // ==========================================
+            // TEST 1: SEMI-DOD (Array of Objects)
+            // ==========================================
+            console.log("Building Semi-DOD Universe...");
+            let semiWorld = new Array(ENTITY_COUNT);
+            for(let i = 0; i < ENTITY_COUNT; i++) {
+                semiWorld[i] = { x: 0, y: 0, vx: 1, vy: 1 };
+            }
+
+            console.log("Running Semi-DOD Physics...");
+            let startSemi = performance.now();
+            
+            for(let frame = 0; frame < FRAMES_TO_SIMULATE; frame++) {
+                for(let i = 0; i < ENTITY_COUNT; i++) {
+                    semiWorld[i].x += semiWorld[i].vx;
+                    semiWorld[i].y += semiWorld[i].vy;
+                }
+            }
+            
+            let endSemi = performance.now();
+            let semiTime = Math.round(endSemi - startSemi);
+            console.log(`⏱️ Semi-DOD Time: ${semiTime} ms\n\n`);
+
+
+            // ==========================================
+            // TEST 2: TRUE DOD (Typed Parallel Arrays)
+            // ==========================================
+            console.log("Building True DOD Universe...");
+            // Notice we use raw blocks of Float32 RAM here!
+            let posX = new Float32Array(ENTITY_COUNT);
+            let posY = new Float32Array(ENTITY_COUNT);
+            let velX = new Float32Array(ENTITY_COUNT);
+            let velY = new Float32Array(ENTITY_COUNT);
+            
+            for(let i = 0; i < ENTITY_COUNT; i++) {
+                velX[i] = 1; 
+                velY[i] = 1; 
+            }
+
+            console.log("Running True DOD Physics...");
+            let startTrue = performance.now();
+            
+            for(let frame = 0; frame < FRAMES_TO_SIMULATE; frame++) {
+                for(let i = 0; i < ENTITY_COUNT; i++) {
+                    posX[i] += velX[i];
+                    posY[i] += velY[i];
+                }
+            }
+            
+            let endTrue = performance.now();
+            let trueTime = Math.round(endTrue - startTrue);
+            console.log(`⏱️ True DOD Time: ${trueTime} ms`);
+
+            // ==========================================
+            // RESULTS
+            // ==========================================
+            console.log(`\n🏆 True DOD was ${Math.round(semiTime / trueTime)}x faster than Semi-DOD!`);
+        }
+    </script>
+</body>
+</html>

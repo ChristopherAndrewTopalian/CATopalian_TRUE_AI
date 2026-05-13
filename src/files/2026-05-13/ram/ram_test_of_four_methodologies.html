@@ -1,0 +1,142 @@
+<!-- Dedicated to God the Father -->
+<!-- All Rights Reserved Christopher Andrew Topalian Copyright 2000-2026 -->
+<!-- https://github.com/ChristopherTopalian -->
+<!-- https://github.com/ChristopherAndrewTopalian -->
+<!-- CATopalian_JavaScript.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>The RAM & Garbage Benchmark</title>
+    <style>
+        body { background-color: #1E1E1E; color: #00FF00; font-family: monospace; padding: 20px; }
+        button { padding: 15px 30px; font-size: 18px; font-weight: bold; background: #333; color: #0f0; border: 2px solid #0f0; cursor: pointer; margin-right: 10px; }
+        button:hover { background: #0f0; color: #000; }
+        #results { margin-top: 20px; font-size: 18px; line-height: 1.8; white-space: pre-wrap; }
+        .warning { color: #FFA500; font-size: 14px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    
+    <h2>The 1,000,000 Entity RAM Footprint</h2>
+    <div class="warning">Note: This test uses Chrome/NW.js specific memory APIs. Click the buttons slowly, one by one, to let the RAM settle!</div>
+    
+    <button onclick="testOOP()">1. Test OOP RAM</button>
+    <button onclick="testCBA()">2. Test CBA RAM</button>
+    <button onclick="testSemiDOD()">3. Test Semi-DOD</button>
+    <button onclick="testTrueDOD()">4. Test True DOD</button>
+
+    <div id="results"></div>
+
+    <script>
+        const ENTITY_COUNT = 1000000;
+        let resBox = document.getElementById('results');
+        
+        // Global variable to hold data so the browser doesn't immediately delete it
+        let currentUniverse = null; 
+
+        function getMB() {
+            if (!performance.memory) return 0;
+            return performance.memory.usedJSHeapSize / 1024 / 1024;
+        }
+
+        function logMsg(msg) {
+            resBox.innerHTML += msg + "\n";
+            console.log(msg);
+        }
+
+        function checkAPI() {
+            if (!performance.memory) {
+                logMsg("❌ ERROR: Your browser does not support the performance.memory API. Please use NW.js, Chrome, or Edge.");
+                return false;
+            }
+            return true;
+        }
+
+        function testOOP() {
+            if(!checkAPI()) return;
+            currentUniverse = null; // Clear old test
+            setTimeout(() => {
+                let startRAM = getMB();
+                class Drone { constructor() { this.x = 0; this.y = 0; this.vx = 1; this.vy = 1; } }
+                
+                let world = new Array(ENTITY_COUNT);
+                for(let i=0; i<ENTITY_COUNT; i++) world[i] = new Drone();
+                currentUniverse = world;
+                
+                let endRAM = getMB();
+                logMsg(`📦 OOP Footprint: ~${Math.round(endRAM - startRAM)} MB allocated.`);
+            }, 100);
+        }
+
+        function testCBA() {
+            if(!checkAPI()) return;
+            currentUniverse = null;
+            setTimeout(() => {
+                let startRAM = getMB();
+                class CEntity { constructor() { this.x=0; this.y=0; this.components = []; } }
+                class MoveComp { constructor() { this.vx=1; this.vy=1; } }
+                
+                let world = new Array(ENTITY_COUNT);
+                for(let i=0; i<ENTITY_COUNT; i++) {
+                    let e = new CEntity();
+                    e.components.push(new MoveComp());
+                    world[i] = e;
+                }
+                currentUniverse = world;
+                
+                let endRAM = getMB();
+                logMsg(`🧩 CBA Footprint: ~${Math.round(endRAM - startRAM)} MB allocated.`);
+            }, 100);
+        }
+
+        function testSemiDOD() {
+            if(!checkAPI()) return;
+            currentUniverse = null;
+            setTimeout(() => {
+                let startRAM = getMB();
+                
+                let world = new Array(ENTITY_COUNT);
+                for(let i=0; i<ENTITY_COUNT; i++) world[i] = { x:0, y:0, vx:1, vy:1 };
+                currentUniverse = world;
+                
+                let endRAM = getMB();
+                logMsg(`🚀 Semi-DOD Footprint: ~${Math.round(endRAM - startRAM)} MB allocated.`);
+            }, 100);
+        }
+
+        function testTrueDOD() {
+            if(!checkAPI()) return;
+            currentUniverse = null;
+            setTimeout(() => {
+                let startRAM = getMB();
+                
+                // True DOD uses physical, raw silicon bytes. 
+                // Float32 = 4 bytes per number. 4 arrays * 1,000,000 * 4 bytes = exactly 16 MB.
+                let world = {
+                    x: new Float32Array(ENTITY_COUNT),
+                    y: new Float32Array(ENTITY_COUNT),
+                    vx: new Float32Array(ENTITY_COUNT),
+                    vy: new Float32Array(ENTITY_COUNT)
+                };
+                
+                // Fill with data to ensure memory is physically claimed
+                for(let i=0; i<ENTITY_COUNT; i++) { world.vx[i] = 1; world.vy[i] = 1; }
+                currentUniverse = world;
+                
+                let endRAM = getMB();
+                logMsg(`⚡ True DOD Footprint: ~${Math.round(endRAM - startRAM)} MB allocated.`);
+            }, 100);
+        }
+    </script>
+</body>
+</html>
+
+<!-- 
+
+oop 36mb ram
+cba 146mb ram
+semi dod 34mb ram
+true dod 21mb ram
+ 
+-->

@@ -1,0 +1,171 @@
+<!-- Dedicated to God the Father -->
+<!-- All Rights Reserved Christopher Andrew Topalian Copyright 2000-2026 -->
+<!-- https://github.com/ChristopherTopalian -->
+<!-- https://github.com/ChristopherAndrewTopalian -->
+<!-- CATopalian_JavaScript.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>The Grand Architecture Benchmark</title>
+    <style>
+        body { background-color: #1E1E1E; color: #00FF00; font-family: monospace; padding: 20px; }
+        button { padding: 15px 30px; font-size: 18px; font-weight: bold; background: #333; color: #0f0; border: 2px solid #0f0; cursor: pointer; }
+        button:hover { background: #0f0; color: #000; }
+        #results { margin-top: 20px; font-size: 18px; line-height: 1.8; white-space: pre-wrap; }
+        .loading { color: #FFA500; }
+    </style>
+</head>
+<body>
+    
+    <h2>The 1,000,000 Entity Showdown (100 Frames)</h2>
+    <p>Testing: OOP (Inheritance) vs CBA (Components) vs Semi-DOD (Objects) vs True DOD (Typed Arrays)</p>
+    <button onclick="startBenchmark()" id="btn">RUN BENCHMARK</button>
+    <div id="results"></div>
+
+    <script>
+        const ENTITY_COUNT = 1000000;
+        const FRAMES = 100;
+        let resBox = document.getElementById('results');
+
+        function logMsg(msg) {
+            resBox.innerHTML += msg + "\n";
+            console.log(msg);
+        }
+
+        async function startBenchmark() 
+        {
+            document.getElementById('btn').disabled = true;
+            resBox.innerHTML = "<span class='loading'>Initializing Simulation... Please wait, the browser may freeze for a moment!</span>\n\n";
+            
+            // Give UI a moment to update before locking the thread
+            await new Promise(r => setTimeout(r, 100)); 
+
+            // ==========================================
+            // TEST 1: OOP (INHERITANCE TREE)
+            // ==========================================
+            logMsg("1. Building OOP Universe...");
+            class Entity {
+                constructor() { this.x = 0; this.y = 0; }
+                move() { /* Base class method */ } 
+            }
+            class Drone extends Entity {
+                constructor() { super(); this.vx = 1; this.vy = 1; }
+                move() { this.x += this.vx; this.y += this.vy; } // Override method
+            }
+
+            let oopWorld = new Array(ENTITY_COUNT);
+            for(let i = 0; i < ENTITY_COUNT; i++) oopWorld[i] = new Drone();
+
+            logMsg("   Running OOP Physics...");
+            let startOOP = performance.now();
+            for(let f = 0; f < FRAMES; f++) {
+                for(let i = 0; i < ENTITY_COUNT; i++) {
+                    oopWorld[i].move(); // CPU has to look up the prototype chain every time!
+                }
+            }
+            let timeOOP = Math.round(performance.now() - startOOP);
+            logMsg(`   ⏱️ OOP Time: ${timeOOP} ms\n`);
+            oopWorld = null; // Clear memory
+            await new Promise(r => setTimeout(r, 100));
+
+
+            // ==========================================
+            // TEST 2: COMPONENT-BASED ARCHITECTURE (CBA)
+            // ==========================================
+            logMsg("2. Building CBA Universe...");
+            class CEntity {
+                constructor() { this.x = 0; this.y = 0; this.vx = 1; this.vy = 1; this.components = []; }
+                addComponent(c) { this.components.push(c); }
+                update() {
+                    // CPU has to loop through an inner array for every single entity!
+                    for(let i = 0; i < this.components.length; i++) {
+                        this.components[i].update(this); 
+                    }
+                }
+            }
+            class MoveComponent {
+                update(ent) { ent.x += ent.vx; ent.y += ent.vy; }
+            }
+
+            let cbaWorld = new Array(ENTITY_COUNT);
+            for(let i = 0; i < ENTITY_COUNT; i++) {
+                let e = new CEntity();
+                e.addComponent(new MoveComponent());
+                cbaWorld[i] = e;
+            }
+
+            logMsg("   Running CBA Physics...");
+            let startCBA = performance.now();
+            for(let f = 0; f < FRAMES; f++) {
+                for(let i = 0; i < ENTITY_COUNT; i++) {
+                    cbaWorld[i].update(); 
+                }
+            }
+            let timeCBA = Math.round(performance.now() - startCBA);
+            logMsg(`   ⏱️ CBA Time: ${timeCBA} ms\n`);
+            cbaWorld = null; 
+            await new Promise(r => setTimeout(r, 100));
+
+
+            // ==========================================
+            // TEST 3: SEMI-DOD (ARRAY OF OBJECTS)
+            // ==========================================
+            logMsg("3. Building Semi-DOD Universe...");
+            let semiWorld = new Array(ENTITY_COUNT);
+            for(let i = 0; i < ENTITY_COUNT; i++) {
+                semiWorld[i] = { x: 0, y: 0, vx: 1, vy: 1 }; // No methods, just data
+            }
+
+            logMsg("   Running Semi-DOD Physics...");
+            let startSemi = performance.now();
+            for(let f = 0; f < FRAMES; f++) {
+                for(let i = 0; i < ENTITY_COUNT; i++) {
+                    semiWorld[i].x += semiWorld[i].vx; // Direct math, no method calls
+                    semiWorld[i].y += semiWorld[i].vy;
+                }
+            }
+            let timeSemi = Math.round(performance.now() - startSemi);
+            logMsg(`   ⏱️ Semi-DOD Time: ${timeSemi} ms\n`);
+            semiWorld = null;
+            await new Promise(r => setTimeout(r, 100));
+
+
+            // ==========================================
+            // TEST 4: TRUE DOD (TYPED PARALLEL ARRAYS)
+            // ==========================================
+            logMsg("4. Building True DOD Universe...");
+            let posX = new Float32Array(ENTITY_COUNT);
+            let posY = new Float32Array(ENTITY_COUNT);
+            let velX = new Float32Array(ENTITY_COUNT);
+            let velY = new Float32Array(ENTITY_COUNT);
+            for(let i = 0; i < ENTITY_COUNT; i++) { velX[i] = 1; velY[i] = 1; }
+
+            logMsg("   Running True DOD Physics...");
+            let startTrue = performance.now();
+            for(let f = 0; f < FRAMES; f++) {
+                for(let i = 0; i < ENTITY_COUNT; i++) {
+                    posX[i] += velX[i]; // Pure math on raw silicon memory
+                    posY[i] += velY[i];
+                }
+            }
+            let timeTrue = Math.round(performance.now() - startTrue);
+            logMsg(`   ⏱️ True DOD Time: ${timeTrue} ms\n`);
+
+            // ==========================================
+            // FINAL REPORT
+            // ==========================================
+            logMsg("=====================================");
+            logMsg("🏆 FINAL RANKINGS:");
+            logMsg(`1st: True DOD  (${timeTrue} ms) -> The absolute speed limit.`);
+            logMsg(`2nd: Semi-DOD  (${timeSemi} ms) -> ${Math.round((timeSemi/timeTrue)*10)/10}x slower than True DOD.`);
+            logMsg(`3rd: OOP       (${timeOOP} ms) -> ${Math.round((timeOOP/timeTrue)*10)/10}x slower than True DOD.`);
+            logMsg(`4th: CBA       (${timeCBA} ms) -> ${Math.round((timeCBA/timeTrue)*10)/10}x slower than True DOD.`);
+            logMsg("=====================================");
+            
+            document.getElementById('btn').disabled = false;
+            document.getElementById('btn').textContent = "RUN AGAIN";
+        }
+    </script>
+</body>
+</html>
