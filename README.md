@@ -1126,7 +1126,7 @@ https://www.youtube.com/watch?v=h9WJy5o5c44
 
 [2026-05-20-g](src/files/2026-05-20/2026-05-20-g.md)
 
-[2026-05-20-001](src/files/2026-05-20/html/001/CATopalian_JavaScript_True_AI.html)
+[2026-05-20-001](src/files/2026-05-20/001/CATopalian_JavaScript_True_AI.html)
 
 ---
 
