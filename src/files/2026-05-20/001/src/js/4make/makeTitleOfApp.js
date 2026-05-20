@@ -4,9 +4,9 @@ function makeTitleOfApp()
 {
     let theTitle = ce('a');
     theTitle.id = 'theTitle';
-    theTitle.href = 'https://github.com/ChristopherAndrewTopalian/CATopalian_JavaScript_True_AI';
+    theTitle.href = 'https://github.com/ChristopherAndrewTopalian/CATopalian_TRUE_AI';
     theTitle.target = '_blank';
-    theTitle.textContent = 'CATopalian JavaScript True AI';
+    theTitle.textContent = 'CATopalian TRUE AI';
     theTitle.style.fontSize = '15px';
     theTitle.style.fontWeight = 'bold';
     theTitle.style.lineHeight = 15 + 'px';
