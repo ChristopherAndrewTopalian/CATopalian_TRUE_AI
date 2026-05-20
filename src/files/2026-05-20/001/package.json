@@ -1,0 +1,23 @@
+{
+  "name": "catopalian-true-ai",
+  "version": "1.0.0",
+  "description": "Data-Oriented True AI Engine with Persistent Memory",
+  "main": "CATopalian_JavaScript_True_AI.html",
+  "scripts": {
+    "start": "nw .",
+    "build": "nwbuild --platforms win32,win64 --buildDir ./build ./"
+  },
+  "window": {
+    "title": "True AI - Initialization",
+    "width": 1280,
+    "height": 720,
+    "position": "center",
+    "resizable": true,
+    "frame": true,
+    "bg_color": "#1E1E1E" 
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "nw-builder": "^4.0.0"
+  }
+}

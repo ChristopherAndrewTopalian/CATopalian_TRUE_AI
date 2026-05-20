@@ -1054,6 +1054,82 @@ https://www.youtube.com/watch?v=h9WJy5o5c44
 
 ---
 
+> ## DATE: 2026-05-12
+
+[2026-05-12-a](src/files/2026-05-12/2026-05-12-a.md)
+
+[2026-05-12-b](src/files/2026-05-12/2026-05-12-b.md)
+
+[2026-05-12-c](src/files/2026-05-12/2026-05-12-c.md)
+
+[2026-05-12-d](src/files/2026-05-12/2026-05-12-d.md)
+
+[2026-05-12-e](src/files/2026-05-12/2026-05-12-e.md)
+
+[2026-05-12-f](src/files/2026-05-12/2026-05-12-f.md)
+
+[2026-05-12-001](src/files/2026-05-12/001/CATopalian_JavaScript_True_AI.html)
+
+[2026-05-12-002](src/files/2026-05-12/002/CATopalian_JavaScript_True_AI.html)
+
+---
+
+> ## DATE: 2026-05-13
+
+[2026-05-13-a](src/files/2026-05-13/2026-05-13-a.md)
+
+[2026-05-13-b](src/files/2026-05-13/2026-05-13-b.md)
+
+[2026-05-13-c](src/files/2026-05-13/2026-05-13-c.md)
+
+[2026-05-13-d](src/files/2026-05-13/2026-05-13-d.md)
+
+[2026-05-13-e](src/files/2026-05-13/2026-05-13-e.md)
+
+[2026-05-13-f](src/files/2026-05-13/2026-05-13-f.md)
+
+[2026-05-13-g](src/files/2026-05-13/2026-05-13-g.md)
+
+[2026-05-13-h](src/files/2026-05-13/2026-05-13-h.md)
+
+[2026-05-13-i](src/files/2026-05-13/2026-05-13-i.md)
+
+[2026-05-13-j](src/files/2026-05-13/2026-05-13-j.md)
+
+[2026-05-13-k](src/files/2026-05-13/2026-05-13-k.md)
+
+[2026-05-13-cpu](src/files/2026-05-13/cpu/dod_four_methodology_test.html)
+
+[2026-05-13-cpu](src/files/2026-05-13/cpu/dod_four_way_test_with_variation.html)
+
+[2026-05-13-cpu](src/files/2026-05-13/cpu/dod_test.html)
+
+[2026-05-13-cpu](src/files/2026-05-13/ram/ram_test_of_four_methodologies.html)
+
+[2026-05-13-cpu](src/files/2026-05-13/cpu/dod_four_way_test_with_variation_report.md)
+
+---
+
+> ## DATE: 2026-05-20
+
+[2026-05-20-a](src/files/2026-05-20/2026-05-20-a.md)
+
+[2026-05-20-b](src/files/2026-05-20/2026-05-20-b.md)
+
+[2026-05-20-c](src/files/2026-05-20/2026-05-20-c.md)
+
+[2026-05-20-d](src/files/2026-05-20/2026-05-20-d.md)
+
+[2026-05-20-e](src/files/2026-05-20/2026-05-20-e.md)
+
+[2026-05-20-f](src/files/2026-05-20/2026-05-20-f.md)
+
+[2026-05-20-g](src/files/2026-05-20/2026-05-20-g.md)
+
+[2026-05-20-001](src/files/2026-05-20/html/001/CATopalian_JavaScript_True_AI.html)
+
+---
+
 Video Playlist: True AI 4D Hypercube Tesseract Neural Network
 https://www.youtube.com/watch?v=-i5qgxvKBi0&list=PLZzVXTvAYTrfYddOG1P6WlNn-p3i7Jj09
 
