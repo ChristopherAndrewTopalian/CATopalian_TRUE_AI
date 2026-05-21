@@ -1130,6 +1130,8 @@ https://www.youtube.com/watch?v=h9WJy5o5c44
 
 [2026-05-20-002](src/files/2026-05-20/002/CATopalian_JavaScript_True_AI.html)
 
+[CATopalian_JavaScript_True_AI](https://christopherandrewtopalian.github.io/CATopalian_TRUE_AI/src/files/2026-05-20/002/CATopalian_JavaScript_True_AI.html)
+
 [2026-05-20 Speed Test a](src/files/2026-05-20/speed_test_map_vs_for_loop/2026-05-20-speed-test-a.md)
 
 [2026-05-20 Speed Test b](src/files/2026-05-20/speed_test_map_vs_for_loop/2026-05-20-speed-test-b.md)
