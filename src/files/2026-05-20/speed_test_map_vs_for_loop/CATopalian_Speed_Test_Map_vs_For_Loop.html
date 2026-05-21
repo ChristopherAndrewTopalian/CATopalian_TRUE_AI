@@ -1,0 +1,100 @@
+<!-- Dedicated to God the Father -->
+<!-- All Rights Reserved Christopher Andrew Topalian Copyright 2000-2026 -->
+<!-- https://github.com/ChristopherTopalian -->
+<!-- https://github.com/ChristopherAndrewTopalian -->
+<!-- CATopalian_Speed_Test_Map_vs_For_Loop.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Speed Test: Map vs For Loop</title>
+    <style>
+        body {
+            background-color: rgb(30, 30, 30);
+            color: #ffffff;
+            font-family: sans-serif;
+            padding: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #0b3d91;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        button:hover {
+            background-color: #155bb5;
+        }
+        #resultsDiv {
+            font-size: 18px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>V8 Engine Optimization Test</h2>
+    <p>Testing an array of 100,000 16-gate logic thoughts.</p>
+
+    <button onclick="runTest()">Run Speed Test</button>
+
+    <div id="resultsDiv"></div>
+
+    <script>
+        // 1. Build a massive mock array of 100,000 thoughts
+        let mockThoughts = [];
+        for (let i = 0; i < 100000; i++) {
+            // A mock 16-gate array
+            mockThoughts.push([1, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 1, 1]);
+        }
+
+        // A handy helper to get DOM elements (keeping your style)
+        function ge(id) {
+            return document.getElementById(id);
+        }
+
+        function runTest() {
+            ge('resultsDiv').innerHTML = "Running tests...<br><br>";
+
+            // --- TEST 1: The .map() and Arrow Function approach ---
+            let timeMapStart = performance.now();
+            
+            let mapResult = "[\n  " + mockThoughts.map(t => JSON.stringify(t)).join(",\n  ") + "\n]";
+            
+            let timeMapEnd = performance.now();
+            let mapDuration = timeMapEnd - timeMapStart;
+
+
+            // --- TEST 2: The ES5 Traditional For Loop approach ---
+            let timeForStart = performance.now();
+            
+            let tempArray = [];
+            for (let i = 0; i < mockThoughts.length; i++) {
+                tempArray.push(JSON.stringify(mockThoughts[i]));
+            }
+            let forResult = "[\n  " + tempArray.join(",\n  ") + "\n]";
+            
+            let timeForEnd = performance.now();
+            let forDuration = timeForEnd - timeForStart;
+
+
+            // --- Display the Results ---
+            let output = "<b>Method 1 (.map with arrow function):</b> " + mapDuration.toFixed(2) + " milliseconds.<br>";
+            output += "<b>Method 2 (Traditional ES5 For Loop):</b> " + forDuration.toFixed(2) + " milliseconds.<br><br>";
+            
+            if (forDuration < mapDuration) {
+                output += "<span style='color: #4CAF50;'><b>Winner: Traditional For Loop!</b></span>";
+            } else {
+                output += "<span style='color: #4CAF50;'><b>Winner: .map() method!</b></span>";
+            }
+
+            ge('resultsDiv').innerHTML += output;
+        }
+    </script>
+
+</body>
+</html>
