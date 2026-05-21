@@ -1128,6 +1128,14 @@ https://www.youtube.com/watch?v=h9WJy5o5c44
 
 [2026-05-20-001](src/files/2026-05-20/001/CATopalian_JavaScript_True_AI.html)
 
+[2026-05-20-001](src/files/2026-05-20/002/CATopalian_JavaScript_True_AI.html)
+
+[2026-05-20 Speed Test a](src/files/2026-05-20/speed_test_map_vs_for_loop/2026-05-20-speed-test-a.md)
+
+[2026-05-20 Speed Test b](src/files/2026-05-20/speed_test_map_vs_for_loop/2026-05-20-speed-test-b.md)
+
+[2026-05-20 Speed Test](src/files/2026-05-20/speed_test_map_vs_for_loop/CATopalian_Speed_Test_Map_vs_For_Loop.html)
+
 ---
 
 Video Playlist: True AI 4D Hypercube Tesseract Neural Network
