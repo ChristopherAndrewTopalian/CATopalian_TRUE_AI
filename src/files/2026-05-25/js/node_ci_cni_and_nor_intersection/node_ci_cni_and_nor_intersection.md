@@ -1,5 +1,7 @@
 // node_ci_cni_and_nor_intersection_b.md
 
+![node_ci_cni_and_nor_intersection_b](node_ci_cni_and_nor_intersection_b.png)
+
 Perfect — pink CI/CNI diagonal line crossing the horizontal green AND/NOR line on the right hemisphere. Let us work it out testing the CI and NOR logic:
 
 ```javascript
