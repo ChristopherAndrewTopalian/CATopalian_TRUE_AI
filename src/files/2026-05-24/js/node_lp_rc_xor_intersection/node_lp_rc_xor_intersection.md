@@ -1,5 +1,7 @@
 // node_lp_rc_xor_intersection.md
 
+![node_lp_rc_xor_intersection](node_lp_rc_xor_intersection.png)
+
 The node sitting between LP, RC, and XOR on that line — let me think about what it geometrically represents. In your diagram the lines connecting the 16 gate nodes to each other pass through those inner nodes. So that particular node sits on the intersection of the line from LP to RC and the line from XOR toward the center. That means it is activated when both of those paths are active simultaneously.
 
 So its if statement would be:
