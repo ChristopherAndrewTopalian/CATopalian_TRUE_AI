@@ -1,5 +1,7 @@
 // node_mi_cni_xor_intersection.md
 
+![node_mi_cni_xor_intersection](node_mi_cni_xor_intersection.png)
+
 Perfect description — pink MI/CNI line crossing the cyan XOR/XNOR line. Let us work it out:
 
 ```javascript
