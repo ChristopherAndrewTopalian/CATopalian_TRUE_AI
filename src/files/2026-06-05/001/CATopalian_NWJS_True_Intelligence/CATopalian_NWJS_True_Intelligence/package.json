@@ -1,0 +1,17 @@
+{
+    "name": "catopalian-nwjs-true-intelligence",
+    "version": "1.0.0",
+    "description": "True Intelligence - A living logical mind with persistent memory.",
+    "main": "CATopalian_NWJS_True_Intelligence.html",
+    "window":
+    {
+        "title": "CATopalian NWJS True Intelligence",
+        "icon": "src/media/textures/icons/catopalian_true_ai.png",
+        "width": 1280,
+        "height": 720,
+        "position": "center",
+        "resizable": true,
+        "frame": true
+    },
+    "nodejs": true
+}
