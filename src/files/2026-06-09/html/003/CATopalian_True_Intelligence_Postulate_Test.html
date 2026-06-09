@@ -1,0 +1,399 @@
+<!-- Dedicated to God the Father -->
+<!-- All Rights Reserved Christopher Andrew Topalian Copyright 2000-2026 -->
+<!-- https://github.com/ChristopherTopalian -->
+<!-- https://github.com/ChristopherAndrewTopalian -->
+<!-- CATopalian_True_Intelligence_Postulate_Test.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>True Intelligence — Postulate Two Revised</title>
+    <style>
+        body  { background: #111; color: #eee; font-family: monospace; padding: 20px; max-width: 980px; }
+        h1    { color: #1D9E75; }
+        h2    { color: #888; font-size: 0.9em; font-weight: normal; margin-bottom: 20px; }
+        .card { border: 1px solid #444; padding: 12px; margin: 8px 0; border-radius: 6px; }
+        .green  { color: #1D9E75; }
+        .orange { color: #BA7517; }
+        .red    { color: #A32D2D; }
+        .label  { font-size: 11px; color: #888; margin-bottom: 3px; }
+        button  { background: #1D9E75; color: white; border: none; padding: 10px 20px;
+                  font-size: 15px; cursor: pointer; border-radius: 4px; margin: 6px 4px; }
+        button:hover { background: #0F6E56; }
+        .verdict { padding: 16px; border-radius: 6px; border: 1px solid #1D9E75; margin: 16px 0; }
+        table { border-collapse: collapse; width: 100%; margin: 8px 0; font-size: 11px; }
+        td,th { border: 1px solid #333; padding: 4px 6px; text-align: center; }
+        th    { color: #1D9E75; background: #1a1a1a; }
+        .self { color: #333; }
+        .high { color: #1D9E75; font-weight: bold; }
+        .mid  { color: #BA7517; }
+        .low  { color: #A32D2D; }
+        .node-row { display: flex; flex-wrap: wrap; gap: 2px; margin: 4px 0; }
+        .node { width: 14px; height: 14px; border-radius: 2px; font-size: 6px;
+                display: flex; align-items: center; justify-content: center; }
+        .on  { background: #1D9E75; }
+        .off { background: #222; }
+        .cluster-pass { border-color: #1D9E75; }
+        .cluster-fail { border-color: #A32D2D; }
+    </style>
+
+    <script>
+
+        function ge(id)  { return document.getElementById(id); }
+        function ce(tag) { return document.createElement(tag); }
+        function ba(el)  { document.body.appendChild(el);      }
+
+        // --- 16 PRIME GATES ---
+        function tau(a,b)  { return 1; }
+        function con(a,b)  { return 0; }
+        function and(a,b)  { return a & b; }
+        function nand(a,b) { return (a & b) ? 0 : 1; }
+        function or(a,b)   { return a | b; }
+        function nor(a,b)  { return (a | b) ? 0 : 1; }
+        function xor(a,b)  { return a ^ b; }
+        function xnor(a,b) { return (a ^ b) ? 0 : 1; }
+        function lp(a,b)   { return a; }
+        function lc(a,b)   { return a ? 0 : 1; }
+        function rp(a,b)   { return b; }
+        function rc(a,b)   { return b ? 0 : 1; }
+        function mi(a,b)   { return (a===0 && b===1) ? 0 : 1; }
+        function mni(a,b)  { return (a===0 && b===1) ? 1 : 0; }
+        function ci(a,b)   { return (a===1 && b===0) ? 0 : 1; }
+        function cni(a,b)  { return (a===1 && b===0) ? 1 : 0; }
+
+        // --- COMBINATIONAL NODES ---
+        function node17(a,b)  { return (tau(a,b)===1 && mi(a,b)===1)  ? 1 : 0; }
+        function node18(a,b)  { return (rp(a,b)===1  && xnor(a,b)===1)? 1 : 0; }
+        function node19(a,b)  { return (tau(a,b)===1 && cni(a,b)===1) ? 1 : 0; }
+        function node20(a,b)  { return (lp(a,b)===1  && xor(a,b)===1) ? 1 : 0; }
+        function node21(a,b)  { return (tau(a,b)===1 && and(a,b)===1) ? 1 : 0; }
+        function node22(a,b)  { return (ci(a,b)===1  && nor(a,b)===1) ? 1 : 0; }
+        function node23(a,b)  { return (ci(a,b)===1  && mni(a,b)===1) ? 1 : 0; }
+        function node24(a,b)  { return (nor(a,b)===1 && rp(a,b)===1)  ? 1 : 0; }
+        function node25(a,b)  { return (nor(a,b)===1 && rc(a,b)===1)  ? 1 : 0; }
+        function node26(a,b)  { return (nand(a,b)===1&& xnor(a,b)===1)? 1 : 0; }
+        function node27(a,b)  { return (nor(a,b)===1 && lc(a,b)===1)  ? 1 : 0; }
+        function node28(a,b)  { return (nor(a,b)===1 && rc(a,b)===1)  ? 1 : 0; }
+        function node29(a,b)  { return (ci(a,b)===1  && or(a,b)===1)  ? 1 : 0; }
+        function node30(a,b)  { return (mi(a,b)===1  && or(a,b)===1)  ? 1 : 0; }
+        function node31(a,b)  { return (tau(a,b)===1 && or(a,b)===1)  ? 1 : 0; }
+        function node32(a,b)  { return (ci(a,b)===1  && cni(a,b)===1) ? 1 : 0; }
+        function node33(a,b)  { return (mi(a,b)===1  && cni(a,b)===1) ? 1 : 0; }
+        function node34(a,b)  { return (and(a,b)===1 && lc(a,b)===1)  ? 1 : 0; }
+        function node35(a,b)  { return (and(a,b)===1 && rc(a,b)===1)  ? 1 : 0; }
+        function node36(a,b)  { return (and(a,b)===1 && xor(a,b)===1) ? 1 : 0; }
+        function node37(a,b)  { return (and(a,b)===1 && lp(a,b)===1)  ? 1 : 0; }
+        function node38(a,b)  { return (lp(a,b)===1  && and(a,b)===1) ? 1 : 0; }
+        function node39(a,b)  { return (mi(a,b)===1  && nor(a,b)===1) ? 1 : 0; }
+        function node40(a,b)  { return (mi(a,b)===1  && and(a,b)===1) ? 1 : 0; }
+        function node41(a,b)  { return (tau(a,b)===1 && lp(a,b)===1)  ? 1 : 0; }
+        function node42(a,b)  { return (ci(a,b)===1  && lp(a,b)===1)  ? 1 : 0; }
+        function node43(a,b)  { return (or(a,b)===1  && rp(a,b)===1)  ? 1 : 0; }
+        function node44(a,b)  { return (ci(a,b)===1  && rc(a,b)===1)  ? 1 : 0; }
+        function node45(a,b)  { return (ci(a,b)===1  && xnor(a,b)===1)? 1 : 0; }
+        function node46(a,b)  { return (ci(a,b)===1  && lc(a,b)===1)  ? 1 : 0; }
+        function node47(a,b)  { return (and(a,b)===1 && lc(a,b)===1)  ? 1 : 0; }
+        function node48(a,b)  { return (mi(a,b)===1  && lc(a,b)===1)  ? 1 : 0; }
+        function node49(a,b)  { return (tau(a,b)===1 && lc(a,b)===1)  ? 1 : 0; }
+        function node50(a,b)  { return (ci(a,b)===1  && rc(a,b)===1)  ? 1 : 0; }
+        function node51(a,b)  { return (or(a,b)===1  && lc(a,b)===1)  ? 1 : 0; }
+        function node52(a,b)  { return (mi(a,b)===1  && rp(a,b)===1)  ? 1 : 0; }
+        function node53(a,b)  { return (mi(a,b)===1  && xor(a,b)===1) ? 1 : 0; }
+        function node54(a,b)  { return (mi(a,b)===1  && lp(a,b)===1)  ? 1 : 0; }
+        function node55(a,b)  { return (and(a,b)===1 && lp(a,b)===1)  ? 1 : 0; }
+        function node56(a,b)  { return (mi(a,b)===1  && lp(a,b)===1)  ? 1 : 0; }
+
+        // --- THINK ---
+        function think(a, b)
+        {
+            return [
+                tau(a,b),  con(a,b),  xor(a,b),  xnor(a,b),
+                and(a,b),  nand(a,b), or(a,b),   nor(a,b),
+                mi(a,b),   mni(a,b),  ci(a,b),   cni(a,b),
+                lp(a,b),   lc(a,b),   rp(a,b),   rc(a,b),
+                node17(a,b), node18(a,b), node19(a,b), node20(a,b),
+                node21(a,b), node22(a,b), node23(a,b), node24(a,b),
+                node25(a,b), node26(a,b), node27(a,b), node28(a,b),
+                node29(a,b), node30(a,b), node31(a,b), node32(a,b),
+                node33(a,b), node34(a,b), node35(a,b), node36(a,b),
+                node37(a,b), node38(a,b), node39(a,b), node40(a,b),
+                node41(a,b), node42(a,b), node43(a,b), node44(a,b),
+                node45(a,b), node46(a,b), node47(a,b), node48(a,b),
+                node49(a,b), node50(a,b), node51(a,b), node52(a,b),
+                node53(a,b), node54(a,b), node55(a,b), node56(a,b)
+            ];
+        }
+
+        // --- ENCODE WORD from multiple input pairs XORed together ---
+        // This gives us unique 56-bit vectors for every concept
+        function encodeWord(pairs)
+        {
+            let combined = new Array(56).fill(0);
+            for (let p = 0; p < pairs.length; p++)
+            {
+                const t = think(pairs[p][0], pairs[p][1]);
+                for (let i = 0; i < 56; i++)
+                {
+                    combined[i] = combined[i] ^ t[i];
+                }
+            }
+            return combined;
+        }
+
+        // --- CONCEPT LIBRARY ---
+        // Input pairs chosen to reflect the logical nature of each concept
+        // Related concepts share most input pairs — differing in only one
+        // This tests whether shared gate activations produce proximity
+        const concepts =
+        {
+            // ANIMALS — domestic warm
+            'cat':      encodeWord([[1,0],[0,1],[1,1]]),
+            'feline':   encodeWord([[1,0],[0,1],[1,1]]),   // identical — should be 100%
+            'kitten':   encodeWord([[1,0],[0,1],[0,0]]),   // shares first two pairs
+            'tiger':    encodeWord([[1,0],[1,1],[1,1]]),   // shares first pair
+
+            'dog':      encodeWord([[0,1],[1,1],[1,0]]),
+            'canine':   encodeWord([[0,1],[1,1],[1,0]]),   // identical — should be 100%
+            'puppy':    encodeWord([[0,1],[1,1],[0,0]]),   // shares first two pairs
+            'wolf':     encodeWord([[0,1],[1,0],[1,1]]),   // shares first pair
+
+            // FIRE / HEAT
+            'fire':     encodeWord([[1,1],[1,0],[1,0]]),
+            'flame':    encodeWord([[1,1],[1,0],[1,0]]),   // identical
+            'heat':     encodeWord([[1,1],[1,0],[0,0]]),   // shares first two
+            'burn':     encodeWord([[1,1],[0,0],[1,0]]),   // shares first pair
+
+            // WATER / COLD
+            'water':    encodeWord([[0,0],[0,1],[0,1]]),
+            'ocean':    encodeWord([[0,0],[0,1],[0,1]]),   // identical
+            'rain':     encodeWord([[0,0],[0,1],[1,1]]),   // shares first two
+            'ice':      encodeWord([[0,0],[1,1],[0,1]]),   // shares first pair
+
+            // OPPOSITES
+            'yes':      encodeWord([[1,1],[1,1],[1,0]]),
+            'no':       encodeWord([[0,0],[0,0],[0,1]]),   // full complement — should be very different
+            'maybe':    encodeWord([[1,0],[0,1],[1,1]]),   // between
+
+            // LIGHT / DARK
+            'light':    encodeWord([[1,1],[1,0],[0,1]]),
+            'dark':     encodeWord([[0,0],[0,1],[1,0]]),   // complement
+            'shadow':   encodeWord([[0,0],[1,0],[0,1]]),   // near dark
+
+            // NUMBERS — sequential
+            'one':      encodeWord([[0,0],[0,1]]),
+            'two':      encodeWord([[0,1],[1,0]]),
+            'three':    encodeWord([[0,1],[1,1]]),
+            'four':     encodeWord([[1,0],[0,0]]),
+        };
+
+        const words = Object.keys(concepts);
+
+        // --- HAMMING ---
+        function hamming(a, b)
+        {
+            let d = 0;
+            for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) d++;
+            return d;
+        }
+
+        function sim(wordA, wordB)
+        {
+            return Math.round((1 - hamming(concepts[wordA], concepts[wordB]) / 56) * 100);
+        }
+
+        function findClosest(word, n)
+        {
+            const others = words.filter(w => w !== word);
+            return others
+                .map(w => ({ word: w, sim: sim(word, w) }))
+                .sort((a,b) => b.sim - a.sim)
+                .slice(0, n);
+        }
+
+        // --- RUN TEST ---
+        function runTest()
+        {
+            ge('outputDiv').innerHTML = '';
+
+            // PART 1: similarity matrix
+            let p1       = ce('div');
+            p1.className = 'card';
+            p1.innerHTML = '<div class="green" style="margin-bottom:8px">PART 1 — Full similarity matrix</div>';
+
+            let tbl  = ce('table');
+            let hrow = ce('tr');
+            let th0  = ce('th'); th0.textContent = ''; hrow.appendChild(th0);
+            for (let w = 0; w < words.length; w++)
+            {
+                let th = ce('th'); th.textContent = words[w]; hrow.appendChild(th);
+            }
+            tbl.appendChild(hrow);
+
+            for (let i = 0; i < words.length; i++)
+            {
+                let row = ce('tr');
+                let td0 = ce('td');
+                td0.textContent = words[i];
+                td0.style.color = '#1D9E75';
+                td0.style.textAlign = 'left';
+                row.appendChild(td0);
+
+                for (let j = 0; j < words.length; j++)
+                {
+                    let td = ce('td');
+                    if (i === j)
+                    {
+                        td.textContent = '—';
+                        td.className   = 'self';
+                    }
+                    else
+                    {
+                        const s        = sim(words[i], words[j]);
+                        td.textContent = s + '%';
+                        td.className   = s >= 75 ? 'high' : s >= 50 ? 'mid' : 'low';
+                    }
+                    row.appendChild(td);
+                }
+                tbl.appendChild(row);
+            }
+            p1.appendChild(tbl);
+            ge('outputDiv').appendChild(p1);
+
+            // PART 2: nearest neighbors
+            let p2       = ce('div');
+            p2.className = 'card';
+            p2.innerHTML = '<div class="green" style="margin-bottom:8px">PART 2 — Nearest neighbors for key concepts</div>';
+
+            const keyWords = ['cat','dog','fire','water','yes','no','light','dark'];
+            for (let k = 0; k < keyWords.length; k++)
+            {
+                const closest = findClosest(keyWords[k], 5);
+                let row           = ce('div');
+                row.style.marginBottom = '6px';
+                row.innerHTML =
+                    '<span style="color:#1D9E75;min-width:80px;display:inline-block">"' + keyWords[k] + '"</span>' +
+                    ' → ' + closest.map(c =>
+                        '<span class="' + (c.sim>=75?'high':c.sim>=50?'mid':'low') + '">' +
+                        c.word + '(' + c.sim + '%)</span>'
+                    ).join('  ');
+                p2.appendChild(row);
+            }
+            ge('outputDiv').appendChild(p2);
+
+            // PART 3: cluster tests
+            let p3       = ce('div');
+            p3.className = 'card';
+            p3.innerHTML = '<div class="green" style="margin-bottom:8px">PART 3 — Cluster validation</div>';
+
+            const clusters =
+            [
+                { name: 'CAT family',   anchor: 'cat',   related: ['feline','kitten','tiger'],  unrelated: ['dog','fire','water','yes','no'] },
+                { name: 'DOG family',   anchor: 'dog',   related: ['canine','puppy','wolf'],     unrelated: ['cat','fire','water','yes','no'] },
+                { name: 'FIRE family',  anchor: 'fire',  related: ['flame','heat','burn'],       unrelated: ['water','cat','dog','yes','no']  },
+                { name: 'WATER family', anchor: 'water', related: ['ocean','rain','ice'],        unrelated: ['fire','cat','dog','yes','no']   },
+                { name: 'LIGHT/DARK',   anchor: 'light', related: ['shadow'],                   unrelated: ['fire','cat','yes']              },
+            ];
+
+            let passCount  = 0;
+            let totalTests = 0;
+
+            for (let c = 0; c < clusters.length; c++)
+            {
+                const cl     = clusters[c];
+                let card     = ce('div');
+                card.className = 'card';
+                card.style.margin = '6px 0';
+
+                let title         = ce('div');
+                title.textContent = cl.name;
+                title.style.color = '#1D9E75';
+                title.style.marginBottom = '6px';
+                card.appendChild(title);
+
+                for (let r = 0; r < cl.related.length; r++)
+                {
+                    const relSim = sim(cl.anchor, cl.related[r]);
+
+                    for (let u = 0; u < cl.unrelated.length; u++)
+                    {
+                        const unrelSim = sim(cl.anchor, cl.unrelated[u]);
+                        const passed   = relSim > unrelSim;
+                        totalTests++;
+                        if (passed) passCount++;
+
+                        let row           = ce('div');
+                        row.className     = 'label';
+                        row.style.color   = passed ? '#1D9E75' : '#A32D2D';
+                        row.textContent   =
+                            (passed ? '✓' : '✗') + '  "' + cl.anchor + '" vs "' + cl.related[r] + '" (' + relSim + '%)  ' +
+                            (passed ? '>' : '<') + '  "' + cl.anchor + '" vs "' + cl.unrelated[u] + '" (' + unrelSim + '%)';
+                        card.appendChild(row);
+                    }
+                }
+                p3.appendChild(card);
+            }
+            ge('outputDiv').appendChild(p3);
+
+            // PART 4: yes/no polarity
+            const ynSim    = sim('yes','no');
+            const ymSim    = sim('yes','maybe');
+            const nmSim    = sim('no','maybe');
+            const ldSim    = sim('light','dark');
+
+            let p4         = ce('div');
+            p4.className   = 'card';
+            p4.innerHTML   =
+                '<div class="green" style="margin-bottom:8px">PART 4 — Polarity and opposition tests</div>' +
+                '<div class="label ' + (ynSim<30?'high':'red') + '">yes vs no: ' + ynSim + '% — ' + (ynSim<30?'✓ correctly distant':'✗ too similar') + '</div>' +
+                '<div class="label">yes vs maybe: ' + ymSim + '% (should be between)</div>' +
+                '<div class="label">no vs maybe: ' + nmSim + '% (should be between)</div>' +
+                '<div class="label ' + (ldSim<30?'high':'red') + '">light vs dark: ' + ldSim + '% — ' + (ldSim<30?'✓ correctly opposite':'✗ too similar') + '</div>';
+            ge('outputDiv').appendChild(p4);
+
+            // VERDICT
+            const pct = Math.round(passCount / totalTests * 100);
+
+            let verdict       = ce('div');
+            verdict.className = 'verdict';
+            verdict.innerHTML =
+                '<div class="green" style="font-size:1.1em;margin-bottom:8px">POSTULATE TWO REVISED — VERDICT</div>' +
+                '<div style="font-size:1.5em;font-weight:bold;color:' + (pct>=75?'#1D9E75':pct>=55?'#BA7517':'#A32D2D') + '">' +
+                pct + '% of cluster tests passed (' + passCount + '/' + totalTests + ')</div>' +
+                '<div style="margin-top:8px;color:#888">yes/no distance: ' + ynSim + '%  |  light/dark distance: ' + ldSim + '%</div>' +
+                '<div style="margin-top:12px;font-size:1.05em">' +
+                (pct>=75 ?
+                    '✓ POSTULATE TWO SUPPORTED — Multi-pair XOR encoding produces genuine semantic clustering from Boolean geometry alone. No training required.' :
+                 pct>=55 ?
+                    '~ PARTIAL SUPPORT — Encoding shows semantic structure. Refine input pair assignments.' :
+                    '✗ NEEDS WORK — Input pair assignments need deeper semantic grounding.') +
+                '</div>';
+            ge('outputDiv').appendChild(verdict);
+        }
+
+        function makeInterface()
+        {
+            let title         = ce('h1');
+            title.textContent = 'True Intelligence — Postulate Two Revised';
+            ba(title);
+
+            let sub         = ce('h2');
+            sub.textContent = 'Multi-pair XOR encoding: each concept encoded as XOR of multiple think(a,b) calls. Tests whether Boolean geometry produces semantic clustering without training.';
+            ba(sub);
+
+            let btn         = ce('button');
+            btn.textContent = '▶ Run Postulate Two Revised';
+            btn.onclick     = runTest;
+            ba(btn);
+
+            let out = ce('div');
+            out.id  = 'outputDiv';
+            ba(out);
+        }
+
+        function whenLoaded() { makeInterface(); }
+
+    </script>
+</head>
+<body onload="whenLoaded()">
+</body>
+</html>

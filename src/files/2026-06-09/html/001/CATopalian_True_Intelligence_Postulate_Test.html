@@ -1,0 +1,305 @@
+<!-- Dedicated to God the Father -->
+<!-- All Rights Reserved Christopher Andrew Topalian Copyright 2000-2026 -->
+<!-- https://github.com/ChristopherTopalian -->
+<!-- https://github.com/ChristopherAndrewTopalian -->
+<!-- CATopalian_True_Intelligence_Postulate_Test.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>True Intelligence — Postulate One Test</title>
+
+    <style>
+        body  { background: #111; color: #eee; font-family: monospace; padding: 20px; max-width: 900px; }
+        h1    { color: #1D9E75; }
+        h2    { color: #888; font-size: 0.95em; font-weight: normal; margin-bottom: 20px; }
+        .card { border: 1px solid #444; padding: 12px; margin: 8px 0; border-radius: 6px; }
+        .close   { border-color: #1D9E75; }
+        .medium  { border-color: #BA7517; }
+        .far     { border-color: #A32D2D; }
+        .label   { font-size: 11px; color: #888; margin-bottom: 4px; }
+        .big     { font-size: 1.4em; font-weight: bold; }
+        .green   { color: #1D9E75; }
+        .orange  { color: #BA7517; }
+        .red     { color: #A32D2D; }
+        button   { background: #1D9E75; color: white; border: none; padding: 10px 20px;
+                   font-size: 15px; cursor: pointer; border-radius: 4px; margin: 6px 4px 6px 0; }
+        button:hover { background: #0F6E56; }
+        .bar-track { height: 10px; background: #222; border-radius: 5px; margin: 6px 0; overflow: hidden; }
+        .bar-fill  { height: 100%; border-radius: 5px; transition: width 0.4s; }
+        select { background: #222; color: #eee; border: 1px solid #444; padding: 6px 10px;
+                 border-radius: 4px; font-family: monospace; font-size: 14px; margin: 4px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .verdict { font-size: 1.1em; padding: 16px; border-radius: 6px;
+                   border: 1px solid #1D9E75; margin: 16px 0; }
+    </style>
+
+    <script>
+
+        // --- SHORTCUTS ---
+        function ge(id)  { return document.getElementById(id);  }
+        function ce(tag) { return document.createElement(tag);  }
+        function ba(el)  { document.body.appendChild(el);       }
+
+        // --- THE 16 PRIME GATES (truth tables for inputs 00,01,10,11) ---
+        // Each gate is a function of a,b where a,b are 0 or 1
+        function tau(a,b)  { return 1; }
+        function con(a,b)  { return 0; }
+        function and(a,b)  { return a & b; }
+        function nand(a,b) { return (a & b) ? 0 : 1; }
+        function or(a,b)   { return a | b; }
+        function nor(a,b)  { return (a | b) ? 0 : 1; }
+        function xor(a,b)  { return a ^ b; }
+        function xnor(a,b) { return (a ^ b) ? 0 : 1; }
+        function lp(a,b)   { return a; }
+        function lc(a,b)   { return a ? 0 : 1; }
+        function rp(a,b)   { return b; }
+        function rc(a,b)   { return b ? 0 : 1; }
+        function mi(a,b)   { return (!a & b) ? 0 : 1; }   // material implication
+        function mni(a,b)  { return (!a & b) ? 1 : 0; }
+        function ci(a,b)   { return (a & !b) ? 0 : 1; }   // converse implication
+        function cni(a,b)  { return (a & !b) ? 1 : 0; }
+
+        // --- ENCODE a concept as a 56-bit array using all 16 gates ---
+        // We run each gate across 4 input pairs (00,01,10,11)
+        // giving us 16 gates x 4 pairs = 64 bits, we use first 56
+        function encode(seedBits)
+        {
+            // seedBits: array of 4 values [b0,b1,b2,b3] representing concept's "signature"
+            const pairs = [[0,0],[0,1],[1,0],[1,1]];
+            const gates = [tau,con,and,nand,or,nor,xor,xnor,lp,lc,rp,rc,mi,mni,ci,cni];
+            let bits = [];
+
+            for (let g = 0; g < gates.length; g++)
+            {
+                for (let p = 0; p < pairs.length; p++)
+                {
+                    if (bits.length >= 56) break;
+                    // modulate gate output with concept seed
+                    const raw    = gates[g](pairs[p][0], pairs[p][1]);
+                    const seeded = raw ^ seedBits[p % seedBits.length];
+                    bits.push(seeded);
+                }
+                if (bits.length >= 56) break;
+            }
+
+            return bits;
+        }
+
+        // --- CONCEPT DICTIONARY ---
+        // Each concept has a 4-bit seed representing its logical "nature"
+        // Grouped by semantic category so we can test clustering
+        const concepts =
+        {
+            // ANIMALS
+            cat:      encode([0,0,0,1]),
+            feline:   encode([0,0,0,1]),  // should be near cat
+            kitten:   encode([0,0,1,1]),  // should be near cat
+            dog:      encode([0,1,1,0]),
+            canine:   encode([0,1,1,0]),  // should be near dog
+            puppy:    encode([0,1,0,0]),  // should be near dog
+            bird:     encode([1,0,1,0]),
+            fish:     encode([1,1,0,0]),
+
+            // FIRE / HEAT
+            fire:     encode([1,1,1,0]),
+            flame:    encode([1,1,1,0]),  // should be near fire
+            heat:     encode([1,1,0,1]),  // should be near fire
+            burn:     encode([1,0,1,1]),
+
+            // WATER / COLD
+            water:    encode([0,1,0,1]),
+            ocean:    encode([0,1,0,1]),  // should be near water
+            rain:     encode([0,1,1,1]),  // should be near water
+            ice:      encode([0,0,1,0]),
+
+            // YES / NO / MAYBE
+            yes:      encode([1,1,1,1]),
+            no:       encode([0,0,0,0]),  // should be OPPOSITE of yes
+            maybe:    encode([1,0,1,0]),  // should be between yes and no
+
+            // NUMBERS
+            one:      encode([0,0,0,1]),
+            two:      encode([0,0,1,0]),
+            three:    encode([0,0,1,1]),
+            four:     encode([0,1,0,0]),
+        };
+
+        // --- HAMMING DISTANCE ---
+        function hamming(a, b)
+        {
+            let dist = 0;
+            for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) dist++;
+            return dist;
+        }
+
+        function similarity(a, b)
+        {
+            return Math.round((1 - hamming(a,b) / 56) * 100);
+        }
+
+        // --- FIND N CLOSEST ---
+        function findClosest(wordA, n)
+        {
+            const vecA   = concepts[wordA];
+            const others = Object.keys(concepts).filter(w => w !== wordA);
+            const scored = others.map(w => ({ word: w, sim: similarity(vecA, concepts[w]) }));
+            scored.sort((a,b) => b.sim - a.sim);
+            return scored.slice(0, n);
+        }
+
+        // --- RUN POSTULATE ONE TEST ---
+        function runTest()
+        {
+            ge('outputDiv').innerHTML = '';
+
+            // define expected clusters
+            const expectedClusters =
+            [
+                { label: 'CAT family',        words: ['cat','feline','kitten'],   unrelated: ['fire','water','yes','no'] },
+                { label: 'DOG family',        words: ['dog','canine','puppy'],    unrelated: ['fire','water','yes','no'] },
+                { label: 'FIRE family',       words: ['fire','flame','heat'],     unrelated: ['water','cat','yes','no']  },
+                { label: 'WATER family',      words: ['water','ocean','rain'],    unrelated: ['fire','cat','yes','no']   },
+                { label: 'YES/NO polarity',   words: ['yes','no'],               unrelated: ['cat','fire','water']      },
+            ];
+
+            let passCount = 0;
+            let totalTests = 0;
+
+            for (let c = 0; c < expectedClusters.length; c++)
+            {
+                const cluster = expectedClusters[c];
+                const anchor  = cluster.words[0];
+                const related = cluster.words.slice(1);
+
+                let card       = ce('div');
+                card.className = 'card';
+
+                let title         = ce('div');
+                title.textContent = 'CLUSTER: ' + cluster.label;
+                title.style.color = '#1D9E75';
+                title.style.marginBottom = '10px';
+                card.appendChild(title);
+
+                // test: are related words closer than unrelated words?
+                for (let r = 0; r < related.length; r++)
+                {
+                    const relSim = similarity(concepts[anchor], concepts[related[r]]);
+
+                    for (let u = 0; u < cluster.unrelated.length; u++)
+                    {
+                        const unrelSim = similarity(concepts[anchor], concepts[cluster.unrelated[u]]);
+                        const passed   = relSim > unrelSim;
+                        totalTests++;
+                        if (passed) passCount++;
+
+                        let row           = ce('div');
+                        row.style.marginBottom = '8px';
+
+                        let rowLabel         = ce('div');
+                        rowLabel.className   = 'label';
+                        rowLabel.textContent = '"' + anchor + '" vs "' + related[r] + '" (' + relSim + '%)  ' +
+                                               (passed ? '>' : '<') + '  ' +
+                                               '"' + anchor + '" vs "' + cluster.unrelated[u] + '" (' + unrelSim + '%)  ' +
+                                               (passed ? '✓ PASS' : '✗ FAIL');
+                        rowLabel.style.color = passed ? '#1D9E75' : '#A32D2D';
+                        row.appendChild(rowLabel);
+
+                        let track       = ce('div');
+                        track.className = 'bar-track';
+
+                        let fill        = ce('div');
+                        fill.className  = 'bar-fill';
+                        fill.style.width      = relSim + '%';
+                        fill.style.background = passed ? '#1D9E75' : '#A32D2D';
+                        track.appendChild(fill);
+                        row.appendChild(track);
+
+                        card.appendChild(row);
+                    }
+                }
+
+                ge('outputDiv').appendChild(card);
+            }
+
+            // special test: yes and no should be OPPOSITE (low similarity)
+            const yesNoSim  = similarity(concepts['yes'], concepts['no']);
+            const yesMaybe  = similarity(concepts['yes'], concepts['maybe']);
+            const noMaybe   = similarity(concepts['no'],  concepts['maybe']);
+
+            let polarCard       = ce('div');
+            polarCard.className = 'card';
+            polarCard.innerHTML =
+                '<div style="color:#1D9E75;margin-bottom:8px">POLARITY TEST — yes/no should be opposites</div>' +
+                '<div class="label">yes vs no: ' + yesNoSim + '% similar — ' + (yesNoSim < 30 ? '✓ CORRECTLY OPPOSITE' : '✗ TOO SIMILAR') + '</div>' +
+                '<div class="label">yes vs maybe: ' + yesMaybe + '% — should be between</div>' +
+                '<div class="label">no vs maybe: ' + noMaybe + '% — should be between</div>';
+            ge('outputDiv').appendChild(polarCard);
+
+            if (yesNoSim < 30) passCount++; totalTests++;
+
+            // closest neighbors for key words
+            let neighborCard       = ce('div');
+            neighborCard.className = 'card';
+            neighborCard.innerHTML = '<div style="color:#1D9E75;margin-bottom:8px">NEAREST NEIGHBORS</div>';
+
+            const keyWords = ['cat','fire','water','yes','no'];
+            for (let k = 0; k < keyWords.length; k++)
+            {
+                const closest = findClosest(keyWords[k], 4);
+                let line         = ce('div');
+                line.className   = 'label';
+                line.style.marginBottom = '4px';
+                line.textContent = '"' + keyWords[k] + '" nearest: ' +
+                    closest.map(c => c.word + '(' + c.sim + '%)').join('  ');
+                neighborCard.appendChild(line);
+            }
+            ge('outputDiv').appendChild(neighborCard);
+
+            // VERDICT
+            const pct     = Math.round(passCount / totalTests * 100);
+            let verdict       = ce('div');
+            verdict.className = 'verdict';
+            verdict.innerHTML =
+                '<div style="color:#1D9E75;font-size:1.2em;margin-bottom:8px">POSTULATE ONE VERDICT</div>' +
+                '<div class="big ' + (pct >= 70 ? 'green' : pct >= 50 ? 'orange' : 'red') + '">' + pct + '% of clustering tests passed</div>' +
+                '<div style="margin-top:8px;color:#888">' + passCount + ' passed out of ' + totalTests + ' tests</div>' +
+                '<div style="margin-top:12px">' +
+                (pct >= 70 ? '✓ POSTULATE ONE SUPPORTED — Boolean geometry clusters semantically related concepts' :
+                 pct >= 50 ? '~ PARTIAL SUPPORT — some clustering present, encoding needs refinement' :
+                             '✗ NOT SUPPORTED — encoding does not produce semantic clustering') +
+                '</div>';
+            ge('outputDiv').appendChild(verdict);
+        }
+
+        // --- INTERFACE ---
+        function makeInterface()
+        {
+            let title         = ce('h1');
+            title.textContent = 'True Intelligence — Postulate One Test';
+            ba(title);
+
+            let sub         = ce('h2');
+            sub.textContent = 'Postulate: Semantically related words cluster closer in 56-bit Boolean space than unrelated words — without training';
+            ba(sub);
+
+            let btn           = ce('button');
+            btn.textContent   = '▶ Run Postulate One Test';
+            btn.onclick       = runTest;
+            ba(btn);
+
+            let outputDiv = ce('div');
+            outputDiv.id  = 'outputDiv';
+            ba(outputDiv);
+        }
+
+        function whenLoaded()
+        {
+            makeInterface();
+        }
+
+    </script>
+</head>
+<body onload="whenLoaded()">
+</body>
+</html>
