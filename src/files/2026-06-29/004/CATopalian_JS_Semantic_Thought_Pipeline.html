@@ -1,0 +1,126 @@
+<!-- Dedicated to God the Father -->
+<!-- All Rights Reserved Christopher Andrew Topalian Copyright 2000-2026 -->
+<!-- https://github.com/ChristopherTopalian -->
+<!-- https://github.com/ChristopherAndrewTopalian -->
+<!-- CATopalian_JS_Semantic_Thought_Pipeline.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Tutorial 0014a: Semantic Thought Pipeline</title>
+
+<style>
+
+    body
+    {
+        background-color: #111;
+        color: #00ffff;
+        font-family: monospace;
+        padding: 20px;
+    }
+
+    input, button
+    {
+        font-family: monospace;
+        font-size: 16px;
+        padding: 5px;
+        margin: 5px 0;
+    }
+
+    #output
+    {
+        margin-top: 20px;
+        border: 1px solid #00ffff;
+        padding: 15px;
+        background: #1a1a1a;
+        min-height: 50px;
+        }
+
+</style>
+
+<script>
+
+// THE CORTEX (The Array of Pure Meaning)
+let cortex = [
+    {
+        concept: "bird",
+        category: "animal",
+        attributes: ["feathers", "wings"],
+        action: "fly"
+    },
+    {
+        concept: "robin",
+        root: "bird", // The associative link!
+        attributes: ["red breast"],
+        action: "hop"
+    },
+    {
+        concept: "dog",
+        category: "animal",
+        attributes: ["fur", "paws"],
+        action: "run"
+    }
+];
+
+// A simple lookup function (Our mental search engine)
+function getConcept(word) {
+    for (let i = 0; i < cortex.length; i++) {
+        if (cortex[i].concept === word) return cortex[i];
+    }
+    return null; // Word not known
+}
+
+// THE MIND (Processing the Input)
+function contemplate() {
+    let inputStr = document.getElementById("userInput").value.toLowerCase();
+    let outputDiv = document.getElementById("output");
+    
+    // We are looking for a simple question format: "Can a [subject] [action]?"
+    // Example: "Can a robin fly?"
+    
+    let words = inputStr.replace('?', '').split(" ");
+    let subjectWord = words[2]; // "robin"
+    let actionWord = words[3];  // "fly"
+    
+    let subjectNode = getConcept(subjectWord);
+    
+    if (!subjectNode) {
+        outputDiv.innerHTML = "I do not know what a '" + subjectWord + "' is yet.";
+        return;
+    }
+
+    // THE LOGIC GATE (Associative Reasoning)
+    outputDiv.innerHTML = "Contemplating '" + subjectWord + "'...<br><br>";
+    
+    // Check direct ability
+    if (subjectNode.action === actionWord) {
+        outputDiv.innerHTML += "Yes. A " + subjectWord + " can " + actionWord + ".";
+        return;
+    }
+    
+    // Check inherited ability (The True AI Leap!)
+    if (subjectNode.root) {
+        let rootNode = getConcept(subjectNode.root);
+        outputDiv.innerHTML += "I know a " + subjectWord + " is a type of " + subjectNode.root + ".<br>";
+        
+        if (rootNode && rootNode.action === actionWord) {
+            outputDiv.innerHTML += "Yes. Because it is a " + subjectNode.root + ", a " + subjectWord + " can " + actionWord + ".";
+            return;
+        }
+    }
+    
+    // If no match found
+    outputDiv.innerHTML += "Based on my cortex, I do not think a " + subjectWord + " can " + actionWord + ".";
+}
+</script>
+</head>
+<body>
+    <h3>=== TUTORIAL 0014: SEMANTIC REASONING ===</h3>
+    <p>Ask a question like: <b>"Can a robin fly?"</b> or <b>"Can a dog fly?"</b></p>
+    
+    <input type="text" id="userInput" value="Can a robin fly?" size="40">
+    <button onclick="contemplate()">Contemplate</button>
+    
+    <div id="output">Machine is resting...</div>
+</body>
+</html>
