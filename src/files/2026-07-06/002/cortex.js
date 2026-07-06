@@ -57,6 +57,22 @@ let cortex =
 console.log(cortex);
 
 /*
+Object { bird: {…}, robin: {…}, "blue jay": {…}, worm: {…}, tree: {…} }
+​
+bird: Object { root: null, aka: (3) […], category: (6) […], … }
+​
+"blue jay": Object { root: "bird", attributes: (4) […], actions: (4) […], … }
+​
+robin: Object { root: "bird", related: (3) […], colors: (5) […], … }
+​
+tree: Object { category: "plant", attributes: (4) […], actions: (3) […], … }
+​
+worm: Object { root: null, category: "invertebrate", related: (3) […], … }
+​
+<prototype>: Object { … }
+*/
+
+/*
 // Lookup instant, no scanning
 console.log(cortex.bird.related);
 // ["robin", "eagle", "hawk", "crow", "blue jay"]
@@ -81,5 +97,4 @@ console.log(cortex.bird.related);
 // All Rights Reserved Christopher Andrew Topalian Copyright 2000-2026
 // https://github.com/ChristopherTopalian
 // https://github.com/ChristopherAndrewTopalian
-
 
