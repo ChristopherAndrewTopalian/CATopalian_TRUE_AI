@@ -1,0 +1,332 @@
+<!-- Dedicated to God the Father -->
+<!-- All Rights Reserved Christopher Andrew Topalian Copyright 2000-2026 -->
+<!-- https://github.com/ChristopherTopalian -->
+<!-- https://github.com/ChristopherAndrewTopalian -->
+<!-- game_loop.html -->
+
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<title>Game Loop AOO (Traditional For Loops)</title>
+
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+
+<style>
+body
+{
+    background-color: rgb(30, 30, 30);
+    color: rgb(255, 255, 255);
+    overflow: hidden;
+}
+</style>
+
+<script>
+
+let world = [];
+
+//----//
+
+// shortcuts.js
+function ge(whichId)
+{
+    let result = document.getElementById(whichId);
+    return result;
+}
+
+function ce(whichType)
+{
+    let result = document.createElement(whichType);
+    return result;
+}
+
+function ba(whichElement)
+{
+    let result = document.body.append(whichElement);
+    return result;
+}
+
+//----//
+
+// fibn.js
+// findIndexByName
+function fibn(whichArray, whichName)
+{
+    for (let i = 0; i < whichArray.length; i++)
+    {
+        if (whichArray[i].name === whichName)
+        {
+            return i;
+        }
+    }
+    return -1;
+}
+
+//----//
+
+function createEntityData(name, x, y, width, height, bgcolor)
+{
+    return {
+        name: name,
+        id: name,
+        width: width,
+        height: height,
+        bgcolor: bgcolor,
+        x: x,
+        y: y,
+        vx: 0, 
+        vy: 0,  
+        shields: 100,
+        energy: 100,
+        emotion: 'neutral',
+        contacts: 0
+    };
+}
+
+function createEntityVisual(data)
+{
+    let visual = ce('div');
+    visual.id = data.id;
+    visual.textContent = data.id;
+    visual.style.position = 'absolute';
+    visual.style.width = data.width + 'px';
+    visual.style.height = data.height + 'px';
+    visual.style.backgroundColor = data.bgcolor;
+    visual.style.padding = '0px';
+    visual.style.margin = '0px';
+    visual.style.borderRadius = '50%';
+    ge('gameBoard').append(visual);
+    return visual;
+}
+
+function spawnEntity(name, x, y, width, height, bgcolor)
+{
+    let newData = createEntityData(name, x, y, width, height, bgcolor);
+
+    createEntityVisual(newData);
+
+    world.push(newData);
+}
+
+//----//
+
+function movementSystem()
+{
+    for (let i = 0; i < world.length; i++)
+    {
+        world[i].x += world[i].vx;
+        world[i].y += world[i].vy;
+    }
+}
+
+//----//
+
+function updateVisuals()
+{
+    for (let i = 0; i < world.length; i++)
+    {
+        let currentData = world[i];
+        let entity = ge(currentData.id);
+        
+        entity.style.left = currentData.x + 'px';
+        entity.style.top = currentData.y + 'px';
+        entity.textContent = currentData.contacts;
+    }
+}
+
+//----//
+
+function collisionSystem()
+{
+    for (let i = 0; i < world.length; i++)
+    {
+        for (let j = i + 1; j < world.length; j++)
+        {
+            let e1 = world[i];
+            let e2 = world[j];
+
+            let isColliding = (
+                e1.x < e2.x + e2.width &&
+                e1.x + e1.width > e2.x &&
+                e1.y < e2.y + e2.height &&
+                e1.y + e1.height > e2.y
+            );
+
+            if (isColliding)
+            {
+                let center1X = e1.x + (e1.width / 2);
+                let center1Y = e1.y + (e1.height / 2);
+                let center2X = e2.x + (e2.width / 2);
+                let center2Y = e2.y + (e2.height / 2);
+
+                let diffX = center1X - center2X;
+                let diffY = center1Y - center2Y;
+
+                e1.contacts += 1;
+                e2.contacts += 1;
+
+                if (Math.abs(diffX) / (e1.width + e2.width) > Math.abs(diffY) / (e1.height + e2.height))
+                {
+                    let overlapX = (e1.width/2 + e2.width/2) - Math.abs(diffX);
+                    if (diffX > 0)
+                    {
+                        e1.x += overlapX / 2;
+                        e2.x -= overlapX / 2;
+                    }
+                    else
+                    {
+                        e1.x -= overlapX / 2;
+                        e2.x += overlapX / 2;
+                    }
+
+                    let tempVx = e1.vx;
+                    e1.vx = e2.vx;
+                    e2.vx = tempVx;
+                }
+                else
+                {
+                    let overlapY = (e1.height/2 + e2.height/2) - Math.abs(diffY);
+                    if (diffY > 0)
+                    {
+                        e1.y += overlapY / 2;
+                        e2.y -= overlapY / 2;
+                    }
+                    else
+                    {
+                        e1.y -= overlapY / 2;
+                        e2.y += overlapY / 2;
+                    }
+
+                    let tempVy = e1.vy;
+                    e1.vy = e2.vy;
+                    e2.vy = tempVy;
+                }
+            }
+        }
+    }
+}
+
+//----//
+
+function boundarySystem() 
+{
+    let screenWidth = window.innerWidth;
+    let screenHeight = window.innerHeight;
+
+    for (let i = 0; i < world.length; i++)
+    {
+        let element = world[i];
+
+        if (element.x < 0)
+        {
+            element.x = 0; 
+            element.vx = -element.vx; 
+        }
+        else if (element.x + element.width > screenWidth)
+        {
+            element.x = screenWidth - element.width; 
+            element.vx = -element.vx; 
+        }
+        
+        if (element.y < 0)
+        {
+            element.y = 0;
+            element.vy = -element.vy;
+        }
+        else if (element.y + element.height > screenHeight)
+        {
+            element.y = screenHeight - element.height;
+            element.vy = -element.vy;
+        }
+    }
+}
+
+//----//
+
+function gameLoop()
+{
+    movementSystem();
+    boundarySystem();
+    collisionSystem();
+    updateVisuals();
+    requestAnimationFrame(gameLoop);
+}
+
+//----//
+
+function createGameBoard()
+{
+    let gameBoard = ce('div');
+    gameBoard.id = 'gameBoard';
+    gameBoard.style.position = 'absolute';
+    gameBoard.style.top = '0px';
+    gameBoard.style.left = '0px';
+    gameBoard.style.width = '100vw';
+    gameBoard.style.height = '100vh';
+    ba(gameBoard);
+}
+
+//----//
+
+function resetContacts()
+{
+    for (let i = 0; i < world.length; i++)
+    {
+        world[i].contacts = 0;
+    }
+}
+
+function whenLoaded()
+{
+    createGameBoard();
+
+    spawnEntity('one', 50, 100, 30, 30, 'yellow');
+    spawnEntity('two', 200, 100, 30, 30, 'blue');
+    spawnEntity('three', 300, 100, 30, 30, 'red');
+    spawnEntity('four', 400, 100, 30, 30, 'purple');
+    spawnEntity('five', 500, 100, 30, 30, 'orange');
+    spawnEntity('six', 600, 100, 30, 30, 'green');
+    spawnEntity('seven', 700, 100, 30, 30, 'brown');
+    spawnEntity('eight', 800, 100, 30, 30, 'black');
+    spawnEntity('nine', 900, 100, 30, 30, 'rgb(200, 200, 0)');
+    spawnEntity('ten', 200, 200, 30, 30, 'rgb(0, 200, 200)');
+    spawnEntity('eleven', 300, 200, 30, 30, 'rgb(200, 0, 0)');
+    spawnEntity('twelve', 400, 200, 30, 30, 'rgb(200, 100, 200)');
+    spawnEntity('thirteen', 500, 200, 30, 30, 'rgb(100, 200, 0)');
+    spawnEntity('fourteen', 600, 200, 30, 30, 'rgb(200, 200, 0)');
+    spawnEntity('fifteen', 700, 200, 30, 30, 'rgb(0, 200, 0)');
+    spawnEntity('sixteen', 800, 200, 30, 30, 'rgb(255, 200, 255)');
+
+    world[fibn(world, 'one')].vx = 1.1;
+    world[fibn(world, 'one')].vy = -1.1;
+
+    world[fibn(world, 'two')].vx = -1.1;
+    world[fibn(world, 'two')].vy = 1.1;
+
+    world[fibn(world, 'three')].vx = 1.1;
+    world[fibn(world, 'three')].vy = -1.1;
+
+    world[fibn(world, 'four')].vx = -1.1;
+    world[fibn(world, 'four')].vy = 1.1;
+
+    world[fibn(world, 'five')].vx = 1.1;
+    world[fibn(world, 'five')].vy = -1.1;
+
+    setTimeout(function()
+    {
+        resetContacts();
+    }, 1000);
+
+    gameLoop();
+}
+
+</script>
+
+</head>
+
+<body onload = "whenLoaded();">
+
+</body>
+
+</html>
+
