@@ -1,0 +1,158 @@
+<!-- Dedicated to God the Father -->
+<!-- All Rights Reserved Christopher Andrew Topalian Copyright 2000-2026 -->
+<!-- https://github.com/ChristopherTopalian -->
+<!-- https://github.com/ChristopherAndrewTopalian -->
+<!-- volume_from_radius_cylinder.html -->
+
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<title> Equilateral Cylinder: Volume from Radius </title>
+
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+
+<link rel="stylesheet" href="src/css/style001.css">
+
+<script src='src/js/1shortcuts/shortcuts.js'></script>
+<script src='src/js/sound/sound.js'></script>
+
+<script>
+
+function calculateCylinderVolumeFromRadius(radius)
+{
+    try
+    {
+        // Equilateral Cylinder: Height is exactly 2 * Radius
+        // V = pi * r^2 * h
+        // V = pi * r^2 * (2r)
+        // V = 2 * pi * r^3
+        let r = parseFloat(radius);
+        let volume = 2 * Math.PI * Math.pow(r, 3);
+        
+        return volume.toFixed(3);
+    }
+    catch (error)
+    {
+        console.log("Error: Could not convert input to a number.");
+        return null;
+    }
+}
+
+function makeInterface()
+{
+    let theTitle = ce('div');
+    theTitle.id = 'theTitle';
+    theTitle.textContent = 'Equilateral Cylinder: Volume from Radius';
+    ba(theTitle);
+
+    let mainWrapper = ce('div');
+    mainWrapper.style.display = 'flex';
+    mainWrapper.style.flexDirection = 'row';
+    mainWrapper.style.gap = '40px';
+    mainWrapper.style.alignItems = 'center';
+    ba(mainWrapper);
+
+    // ===
+    // LEFT SIDE: The Calculator
+    // ===
+    let inputContainer = ce('div');
+    inputContainer.id = 'inputContainer';
+    mainWrapper.append(inputContainer);
+
+    let input_A_Label = ce('div');
+    input_A_Label.id = 'input_A_Label';
+    input_A_Label.textContent = 'RADIUS';
+    inputContainer.append(input_A_Label);
+
+    let inputA = ce('input');
+    inputA.id = 'inputA';
+    inputA.type = 'number';
+    inputA.oninput = function()
+    {
+        if(typeof inputSound === "function") inputSound();
+        
+        let result = calculateCylinderVolumeFromRadius(inputA.value);
+        ge('result').value = result;
+        
+        if (inputA.value === '')
+        {
+            ge('svgRadiusText').textContent = 'Radius';
+            ge('svgVolumeText').textContent = 'Volume';
+        }
+        else
+        {
+            ge('svgRadiusText').textContent = 'R = ' + inputA.value;
+            ge('svgVolumeText').textContent = 'V = ' + result; 
+        }
+    };
+    inputContainer.append(inputA);
+
+    //-//
+
+    let result_label = ce('div');
+    result_label.id = 'result_label';
+    result_label.textContent = 'Volume';
+    inputContainer.append(result_label);
+
+    let result = ce('textarea');
+    result.id = 'result';
+    result.readOnly = true; 
+    inputContainer.append(result);
+
+    // ===
+    // RIGHT SIDE: The SVG Graphic
+    // ===
+    let visualContainer = ce('div');
+    visualContainer.id = 'visualContainer';
+    
+    // Draw the Equilateral Cylinder (Height = Width)
+    // We use a glowing orange/yellow fill for the Volume output
+    // And a dashed cyan line for the Radius input
+    visualContainer.innerHTML = `
+        <svg width="300" height="300" viewBox="0 0 300 300">
+            <defs>
+                <linearGradient id="cylinderVolumeLight" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="rgba(255, 136, 0, 0.8)" />
+                    <stop offset="50%" stop-color="rgba(255, 255, 0, 0.4)" />
+                    <stop offset="100%" stop-color="rgba(255, 136, 0, 0.8)" />
+                </linearGradient>
+            </defs>
+
+            <!-- Main Body of the Cylinder (Input: Volume) -->
+            <!-- Bounding box is exactly 160 wide and 160 tall -->
+            <rect x="70" y="70" width="160" height="160" fill="url(#cylinderVolumeLight)" />
+            <path d="M 70,70 v 160" fill="none" stroke="#ffcc00" stroke-width="2" />
+            <path d="M 230,70 v 160" fill="none" stroke="#ffcc00" stroke-width="2" />
+
+            <!-- Bottom Cap (Solid yellow boundary) -->
+            <ellipse cx="150" cy="230" rx="80" ry="25" fill="rgba(255, 136, 0, 0.8)" stroke="#ffcc00" stroke-width="2" />
+            
+            <!-- Top Cap (Solid yellow boundary) -->
+            <ellipse cx="150" cy="70" rx="80" ry="25" fill="rgba(255, 255, 0, 0.5)" stroke="#ffcc00" stroke-width="2" />
+
+            <!-- Center Core Dot on the Top Cap -->
+            <circle cx="150" cy="70" r="4" fill="#00ffcc" />
+
+            <!-- Radius Line (Input: Dashed cyan line from center to edge on the top cap) -->
+            <line x1="150" y1="70" x2="230" y2="70" stroke="#00ffcc" stroke-width="4" stroke-dasharray="5,5" />
+
+            <!-- Labels -->
+            <text id="svgRadiusText" x="190" y="55" fill="#00ffcc" font-size="18" font-weight="bold" text-anchor="middle" font-family="Arial, sans-serif" style="text-shadow: 1px 1px 4px black, -1px -1px 4px black;">Radius</text>
+            
+            <text id="svgVolumeText" x="150" y="160" fill="#ffcc00" font-size="22" font-weight="bold" text-anchor="middle" font-family="Arial, sans-serif" style="text-shadow: 1px 1px 4px black, -1px -1px 4px black;">Volume</text>
+        </svg>
+    `;
+    mainWrapper.append(visualContainer);
+}
+
+function whenLoaded()
+{
+    makeInterface();
+}
+
+</script>
+</head>
+<body onload='whenLoaded();'>
+</body>
+</html>
