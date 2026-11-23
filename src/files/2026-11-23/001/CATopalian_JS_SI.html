@@ -1,0 +1,214 @@
+<!-- Dedicated to the Creator of All Beings -->
+<!-- All Rights Reserved Christopher Andrew Topalian Copyright 2000-2026 -->
+<!-- https://github.com/ChristopherTopalian -->
+<!-- https://github.com/ChristopherAndrewTopalian -->
+<!-- CATopalian_JS_SI.html -->
+
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<title> CATopalian JS SI </title>
+
+<meta charset = 'UTF-8'>
+
+<meta name = 'viewport' content = 'width = device-width, initial-scale = 1.0'>
+
+<style>
+
+body
+{
+    background-color: rgb(30, 30, 30);
+    font-family: Arial;
+    font-size: 20px;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+}
+
+</style>
+
+<script>
+
+// ===
+// shortcuts.js
+// ===
+function ge(whichId)
+{
+    let result = document.getElementById(whichId);
+    return result;
+}
+
+function ce(whichType)
+{
+    let result = document.createElement(whichType);
+    return result;
+}
+
+function ba(whichElement)
+{
+    let result = document.body.append(whichElement);
+    return result;
+}
+
+function cl(whichText)
+{
+    let result = console.log(whichText);
+    return result;
+}
+
+function ct(whichText)
+{
+    let result = document.createTextNode(whichText);
+    return result;
+}
+
+//----//
+
+// ===
+// DATA
+// ===
+let fps = 1;
+let frameDuration = 1000 / fps;
+let keepThinking;
+let counter = 0;
+
+let knownWords = [
+    {
+        word: 'hi',
+        meaning: 'greeting'
+    },
+    {
+        word: 'weather',
+        meaning: 'environment condition'
+    }
+];
+
+//----//
+
+// ===
+// INTERFACE
+// ===
+function makeInterface()
+{
+    let textInput = ce('textarea');
+    textInput.id = 'textInput';
+    ba(textInput);
+}
+
+//----//
+
+// ===
+// MODULAR PIPELINE FUNCTIONS (Input -> Output)
+// ===
+
+// 1. INPUT: element id | OUTPUT: raw trimmed string
+function listenForText(whichId)
+{
+    let element = ge(whichId);
+
+    if (!element)
+    {
+        return '';
+    }
+
+    return element.value.trim();
+}
+
+// 2. INPUT: raw string | OUTPUT: array of clean lowercase words
+function tokenizeWords(whichText)
+{
+    // Early return replaces wrapping everything inside an if/else
+    if (whichText === '')
+    {
+        return [];
+    }
+
+    // Lowercase and strip punctuation so "hi," still matches "hi"
+    let cleanText = whichText.toLowerCase().replace(/[^\w\s]/g, '');
+
+    if (cleanText.trim() === '')
+    {
+        return [];
+    }
+
+    let wordArray = cleanText.trim().split(/\s+/);
+    return wordArray;
+}
+
+// 3. INPUT: array of words + dictionary | OUTPUT: array of matching objects
+function findKnownWords(whichWords, whichDictionary)
+{
+    let foundMatches = [];
+
+    for (let i = 0; i < whichWords.length; i++)
+    {
+        for (let j = 0; j < whichDictionary.length; j++)
+        {
+            if (whichWords[i] === whichDictionary[j].word)
+            {
+                foundMatches.push(whichDictionary[j]);
+                break;
+            }
+        }
+    }
+
+    return foundMatches;
+}
+
+// 4. INPUT: matching objects | OUTPUT: array of meanings (easy to expand later)
+function extractMeanings(whichMatches)
+{
+    let meanings = [];
+
+    for (let i = 0; i < whichMatches.length; i++)
+    {
+        meanings.push(whichMatches[i].meaning);
+    }
+
+    return meanings;
+}
+
+//----//
+
+// ===
+// MAIN LOOP (Orchestrates the pipeline)
+// ===
+function think()
+{
+    keepThinking = setInterval(function()
+    {
+        counter++;
+
+        // Step-by-step data flow: each output feeds the next input
+        let spokenText = listenForText('textInput');
+
+        let words = tokenizeWords(spokenText);
+
+        let matches = findKnownWords(words, knownWords);
+
+        let meanings = extractMeanings(matches);
+
+        if (matches.length > 0)
+        {
+            cl(words);
+            cl(matches);
+            cl(meanings);
+        }
+
+    }, frameDuration);
+}
+
+function whenLoaded()
+{
+    makeInterface();
+    think();
+}
+
+</script>
+
+</head>
+
+<body onload = 'whenLoaded();'>
+
+</body>
+
+</html>
