@@ -1,0 +1,795 @@
+<!-- Dedicated to the Creator of All Beings -->
+<!-- All Rights Reserved Christopher Andrew Topalian Copyright 2000-2026 -->
+<!-- https://github.com/ChristopherTopalian -->
+<!-- https://github.com/ChristopherAndrewTopalian -->
+<!-- CATopalian_JS_TRUE_SI.html -->
+
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<title> CATopalian JS TRUE SI (hardened) </title>
+
+<meta charset = 'UTF-8'>
+<meta name = 'viewport' content = 'width = device-width, initial-scale = 1.0'>
+
+<style>
+
+body
+{
+    background-color: rgb(30, 30, 30);
+    font-family: Arial;
+    font-size: 16px;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    margin: 20px;
+}
+
+textarea
+{
+    width: 340px;
+    height: 80px;
+    background-color: rgb(20, 20, 20);
+    color: rgb(255, 255, 255);
+    border: 2px solid rgb(0, 255, 255);
+    font-family: Arial;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 8px;
+}
+
+button
+{
+    background-color: rgb(45, 45, 45);
+    color: rgb(255, 255, 255);
+    border: 2px solid rgb(0, 255, 255);
+    font-family: Arial;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 6px 12px;
+    margin-right: 8px;
+    margin-top: 8px;
+    cursor: pointer;
+}
+
+button:hover
+{
+    background-color: rgb(0, 120, 255);
+}
+
+canvas
+{
+    background-color: rgb(15, 15, 15);
+    border: 2px solid rgb(80, 80, 80);
+    max-width: 100%;
+}
+
+</style>
+
+<script>
+
+'use strict';
+
+// ===
+// shortcuts.js
+// ===
+function ge(whichId)
+{
+    return document.getElementById(whichId);
+}
+
+function ce(whichType)
+{
+    return document.createElement(whichType);
+}
+
+function ba(whichElement)
+{
+    document.body.append(whichElement);
+}
+
+//----//
+
+// ===
+// SETTINGS (every limit is explicit, so memory use is bounded)
+// ===
+const MAX_INPUT_CHARS = 500;
+const MAX_LOG_ENTRIES = 200;
+const MIN_CLOCK_MS = 50;
+
+const CYAN = 'rgb(0, 255, 255)';
+const GREEN = 'rgb(0, 255, 0)';
+const ORANGE = 'rgb(255, 165, 0)';
+const PINK = 'rgb(255, 210, 220)';
+
+//----//
+
+// ===
+// THE 16 GATES: ONE TRUTH-TABLE STRING EACH
+// bits are ordered for inputs (a,b) = 00, 01, 10, 11
+// There are exactly 2^4 = 16 possible tables for two inputs.
+// ===
+const logicGatesData = Object.freeze([
+    ['Tautology',     '1111', CYAN],
+    ['CI',            '1011', PINK],
+    ['NOR',           '1000', GREEN],
+    ['RP',            '0101', ORANGE],
+    ['XNOR',          '1001', CYAN],
+    ['LC',            '1100', ORANGE],
+    ['NAND',          '1110', GREEN],
+    ['MNI',           '0010', PINK],
+    ['Contradiction', '0000', CYAN],
+    ['CNI',           '0100', PINK],
+    ['OR',            '0111', GREEN],
+    ['RC',            '1010', ORANGE],
+    ['XOR',           '0110', CYAN],
+    ['LP',            '0011', ORANGE],
+    ['AND',           '0001', GREEN],
+    ['MI',            '1101', PINK]
+].map(function(row)
+{
+    return Object.freeze({ name: row[0], bits: row[1], color: row[2] });
+}));
+
+const gateByName = new Map(logicGatesData.map(function(g)
+{
+    return [g.name, g];
+}));
+
+// Inputs must be exactly the numbers 0 or 1. Anything else is an error, never a guess.
+function toBit(value)
+{
+    if (value === 0 || value === 1)
+    {
+        return value;
+    }
+
+    throw new RangeError('Gate input must be exactly 0 or 1, got: ' + String(value));
+}
+
+function gate(bits, a, b)
+{
+    return bits.charAt(toBit(a) * 2 + toBit(b)) === '1' ? 1 : 0;
+}
+
+function runGate(name, a, b)
+{
+    let g = gateByName.get(name);
+
+    if (g === undefined)
+    {
+        throw new Error('Unknown gate: ' + name);
+    }
+
+    return gate(g.bits, a, b);
+}
+
+function complementOf(bits)
+{
+    let result = '';
+
+    for (let i = 0; i < bits.length; i++)
+    {
+        result += bits.charAt(i) === '1' ? '0' : '1';
+    }
+
+    return result;
+}
+
+function oppositeOf(g)
+{
+    let wanted = complementOf(g.bits);
+
+    for (let i = 0; i < logicGatesData.length; i++)
+    {
+        if (logicGatesData[i].bits === wanted)
+        {
+            return logicGatesData[i];
+        }
+    }
+
+    return null;
+}
+
+// Proves the table is sound. Returns a list of problems (empty list = pass).
+function selfTest()
+{
+    let problems = [];
+    let seen = new Set();
+
+    for (let i = 0; i < logicGatesData.length; i++)
+    {
+        let g = logicGatesData[i];
+
+        if (!/^[01]{4}$/.test(g.bits))
+        {
+            problems.push(g.name + ': malformed truth table');
+        }
+
+        seen.add(g.bits);
+
+        let opp = oppositeOf(g);
+
+        if (opp === null)
+        {
+            problems.push(g.name + ': has no opposite');
+            continue;
+        }
+
+        for (let a = 0; a <= 1; a++)
+        {
+            for (let b = 0; b <= 1; b++)
+            {
+                if (gate(g.bits, a, b) + gate(opp.bits, a, b) !== 1)
+                {
+                    problems.push(g.name + ' and ' + opp.name + ' are not exact opposites');
+                }
+            }
+        }
+    }
+
+    if (logicGatesData.length !== 16 || seen.size !== 16)
+    {
+        problems.push('Expected 16 distinct gates, found ' + seen.size);
+    }
+
+    try
+    {
+        gate('1111', 2, 0);
+        problems.push('Out-of-range input was accepted');
+    }
+    catch (error)
+    {
+        // Expected: invalid input must be rejected.
+    }
+
+    return problems;
+}
+
+//----//
+
+// ===
+// CORE SYSTEM OPERATIONS
+// ===
+
+// SR latch. If set and reset arrive together, reset wins (a defined, documented rule).
+function flipFlop(currentState, set, reset)
+{
+    if (reset === 1)
+    {
+        return 0;
+    }
+
+    if (set === 1)
+    {
+        return 1;
+    }
+
+    return currentState;
+}
+
+// One NAND fed by its own previous output. With input 1 it simply toggles each tick.
+function recursionCycle(externalInput, previousFeedback)
+{
+    return runGate('NAND', externalInput, previousFeedback);
+}
+
+// Passes the signal when enabled, null ('Z') when disabled.
+function triStateBuffer(input, enable)
+{
+    return enable === 1 ? input : null;
+}
+
+let frameDuration = 1000;
+let pulseTimer = null;
+let clockPulse = 0;
+let counter = 0;
+
+function startClock(speedInMilliseconds)
+{
+    stopClock();
+
+    let speed = Number.isFinite(speedInMilliseconds) ? speedInMilliseconds : 1000;
+
+    if (speed < MIN_CLOCK_MS)
+    {
+        speed = MIN_CLOCK_MS;
+    }
+
+    pulseTimer = setInterval(function()
+    {
+        counter++;
+        clockPulse = clockPulse === 1 ? 0 : 1;
+        runSystemCycle();
+    }, speed);
+}
+
+function stopClock()
+{
+    if (pulseTimer !== null)
+    {
+        clearInterval(pulseTimer);
+        pulseTimer = null;
+    }
+}
+
+//----//
+
+// ===
+// DIAGRAM DATA (nodes run clockwise from 12:00)
+// ===
+const diameters = [
+    [0, 8, CYAN], [4, 12, CYAN],
+    [2, 10, GREEN], [6, 14, GREEN],
+    [3, 11, ORANGE], [5, 13, ORANGE],
+    [1, 9, PINK], [7, 15, PINK]
+];
+
+const squares = [
+    { color: GREEN,  nodes: [14, 2, 6, 10] },
+    { color: ORANGE, nodes: [13, 3, 5, 11] },
+    { color: PINK,   nodes: [15, 1, 7, 9] }
+];
+
+//----//
+
+// ===
+// SYSTEM STATE, DICTIONARY, AND EVENT LOG
+// ===
+let memoryLatch = 0;
+let feedbackState = 0;
+let testProblems = [];
+let eventLog = [];
+
+// A Map has no hidden keys, so words like "constructor" cannot misfire.
+const knownWords = new Map([
+    ['hi', 'greeting'],
+    ['weather', 'environment condition']
+]);
+
+// Packs the 16 gate outputs into one 16-bit number (gate 0 = highest bit).
+function packState(results)
+{
+    let word = 0;
+
+    for (let i = 0; i < results.length; i++)
+    {
+        word = (word << 1) | results[i].value;
+    }
+
+    return word & 0xFFFF;
+}
+
+// Records only when something changes, and never holds more than MAX_LOG_ENTRIES.
+function logEvent(tick, a, b, stateWord, words)
+{
+    let last = eventLog[eventLog.length - 1];
+
+    if (last !== undefined && last.a === a && last.b === b)
+    {
+        return;
+    }
+
+    eventLog.push({
+        tick: tick,
+        time: new Date().toISOString(),
+        a: a,
+        b: b,
+        state: stateWord,
+        words: words.slice(0, 8)
+    });
+
+    if (eventLog.length > MAX_LOG_ENTRIES)
+    {
+        eventLog.shift();
+    }
+}
+
+//----//
+
+// ===
+// INTERFACE
+// ===
+function manualResetLatch()
+{
+    memoryLatch = flipFlop(memoryLatch, 0, 1);
+    ge('textInput').value = '';
+    runSystemCycle();
+}
+
+function makeButton(label, action)
+{
+    let button = ce('button');
+    button.textContent = label;
+    button.addEventListener('click', action);
+    return button;
+}
+
+function makeInterface()
+{
+    let layout = ce('div');
+    layout.style.display = 'flex';
+    layout.style.flexWrap = 'wrap';
+    layout.style.gap = '24px';
+    layout.style.alignItems = 'flex-start';
+    ba(layout);
+
+    let leftPanel = ce('div');
+    leftPanel.style.width = '360px';
+    layout.append(leftPanel);
+
+    let label = ce('div');
+    label.textContent = 'Input (try: hi, weather, or reset):';
+    label.style.marginBottom = '8px';
+    leftPanel.append(label);
+
+    let textInput = ce('textarea');
+    textInput.id = 'textInput';
+    textInput.maxLength = MAX_INPUT_CHARS;
+    textInput.addEventListener('input', runSystemCycle);
+    leftPanel.append(textInput);
+
+    let controls = ce('div');
+    controls.append(makeButton('Start Clock', function() { startClock(frameDuration); }));
+    controls.append(makeButton('Stop Clock', stopClock));
+    controls.append(makeButton('Reset Latch', manualResetLatch));
+    leftPanel.append(controls);
+
+    let readout = ce('div');
+    readout.id = 'readout';
+    readout.style.marginTop = '16px';
+    readout.style.lineHeight = '1.6';
+    leftPanel.append(readout);
+
+    let canvas = ce('canvas');
+    canvas.id = 'diagramCanvas';
+    canvas.width = 760;
+    canvas.height = 760;
+    layout.append(canvas);
+}
+
+//----//
+
+// ===
+// PIPELINE FUNCTIONS (input -> output)
+// ===
+function listenForText(whichId)
+{
+    let element = ge(whichId);
+
+    if (!element)
+    {
+        return '';
+    }
+
+    return element.value.slice(0, MAX_INPUT_CHARS).trim();
+}
+
+// Keeps letters and numbers from any language; everything else becomes a space.
+function tokenizeWords(whichText)
+{
+    let clean = whichText.normalize('NFC').toLowerCase().replace(/[^\p{L}\p{N}\s]/gu, ' ').trim();
+
+    if (clean === '')
+    {
+        return [];
+    }
+
+    return clean.split(/\s+/);
+}
+
+function findKnownWords(whichWords)
+{
+    let found = [];
+
+    for (let i = 0; i < whichWords.length; i++)
+    {
+        if (knownWords.has(whichWords[i]))
+        {
+            found.push({ word: whichWords[i], meaning: knownWords.get(whichWords[i]) });
+        }
+    }
+
+    return found;
+}
+
+function checkResetSignal(whichWords)
+{
+    return (whichWords.includes('reset') || whichWords.includes('clear')) ? 1 : 0;
+}
+
+function evaluate16Gates(a, b)
+{
+    return logicGatesData.map(function(g, i)
+    {
+        return { index: i, gate: g, value: gate(g.bits, a, b) };
+    });
+}
+
+// Four competing channels share one bus; the first open channel wins.
+function evaluateTriStateBus(a, b)
+{
+    let channels = [
+        { gate: 'NOR (0,0)', output: triStateBuffer('IDLE: Waiting for known input', runGate('NOR', a, b)) },
+        { gate: 'MNI (1,0)', output: triStateBuffer('NEW: Input detected, setting latch', runGate('MNI', a, b)) },
+        { gate: 'AND (1,1)', output: triStateBuffer('ACTIVE: Live input + latched memory', runGate('AND', a, b)) },
+        { gate: 'CNI (0,1)', output: triStateBuffer('HELD: Input cleared, latch holding memory', runGate('CNI', a, b)) }
+    ];
+
+    let activeMessage = 'Z (High-Impedance)';
+
+    for (let i = 0; i < channels.length; i++)
+    {
+        if (channels[i].output !== null)
+        {
+            activeMessage = channels[i].output;
+            break;
+        }
+    }
+
+    return { activeMessage: activeMessage, channels: channels };
+}
+
+//----//
+
+// ===
+// VISUAL RENDERING
+// ===
+function getNodePosition(index, centerX, centerY, radius)
+{
+    let angle = -Math.PI / 2 + (index * (2 * Math.PI / 16));
+
+    return {
+        x: centerX + Math.cos(angle) * radius,
+        y: centerY + Math.sin(angle) * radius
+    };
+}
+
+function drawRectangularVenn(ctx, centerX, centerY, a, b, bits)
+{
+    let cellPairs = [[1, 0], [1, 1], [0, 1], [0, 0]];
+    let cellW = 11;
+    let cellH = 16;
+    let totalW = cellW * 4;
+    let startX = centerX - (totalW / 2);
+    let startY = centerY - (cellH / 2);
+
+    ctx.strokeStyle = 'rgb(255, 255, 255)';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(startX - 2, startY - 2, totalW + 4, cellH + 4);
+
+    for (let i = 0; i < 4; i++)
+    {
+        let isTrue = gate(bits, cellPairs[i][0], cellPairs[i][1]) === 1;
+
+        ctx.fillStyle = isTrue ? 'rgb(0, 120, 255)' : 'rgb(255, 255, 255)';
+        ctx.fillRect(startX + (i * cellW), startY, cellW - 1, cellH);
+
+        if (cellPairs[i][0] === a && cellPairs[i][1] === b)
+        {
+            ctx.strokeStyle = 'rgb(255, 255, 0)';
+            ctx.strokeRect(startX + (i * cellW), startY, cellW - 1, cellH);
+        }
+    }
+}
+
+function renderDiagram(a, b, results, pulse, feedback)
+{
+    let canvas = ge('diagramCanvas');
+
+    if (!canvas)
+    {
+        return;
+    }
+
+    let ctx = canvas.getContext('2d');
+    let cx = canvas.width / 2;
+    let cy = canvas.height / 2;
+    let ringRadius = 215;
+    let labelRadius = 285;
+    let iconRadius = 335;
+
+    function drawChord(from, to, color)
+    {
+        let p1 = getNodePosition(from, cx, cy, ringRadius);
+        let p2 = getNodePosition(to, cx, cy, ringRadius);
+
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+    }
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, ringRadius, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgb(255, 255, 0)';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    for (let i = 0; i < diameters.length; i++)
+    {
+        drawChord(diameters[i][0], diameters[i][1], diameters[i][2]);
+    }
+
+    for (let i = 0; i < squares.length; i++)
+    {
+        let n = squares[i].nodes;
+
+        for (let j = 0; j < n.length; j++)
+        {
+            drawChord(n[j], n[(j + 1) % n.length], squares[i].color);
+        }
+    }
+
+    // Center hub: size = clock pulse, color = recursion feedback
+    ctx.beginPath();
+    ctx.arc(cx, cy, pulse === 1 ? 15 : 10, 0, Math.PI * 2);
+    ctx.fillStyle = feedback === 1 ? 'rgb(255, 105, 180)' : 'rgb(90, 40, 70)';
+    ctx.fill();
+    ctx.strokeStyle = pulse === 1 ? CYAN : 'rgb(255, 255, 255)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    ctx.font = 'bold 13px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    for (let i = 0; i < results.length; i++)
+    {
+        let g = results[i].gate;
+        let on = results[i].value === 1;
+        let nodePos = getNodePosition(i, cx, cy, ringRadius);
+        let labelPos = getNodePosition(i, cx, cy, labelRadius);
+        let iconPos = getNodePosition(i, cx, cy, iconRadius);
+
+        ctx.beginPath();
+        ctx.arc(nodePos.x, nodePos.y, on ? 9 : 6, 0, Math.PI * 2);
+        ctx.fillStyle = on ? 'rgb(255, 255, 0)' : 'rgb(20, 20, 20)';
+        ctx.fill();
+        ctx.strokeStyle = on ? 'rgb(255, 255, 255)' : 'rgb(255, 255, 0)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.fillStyle = on ? g.color : 'rgb(120, 120, 120)';
+        ctx.fillText(g.name, labelPos.x, labelPos.y - 8);
+        ctx.fillText(g.bits, labelPos.x, labelPos.y + 8);
+
+        drawRectangularVenn(ctx, iconPos.x, iconPos.y, a, b, g.bits);
+    }
+}
+
+// Text is always inserted with textContent, never innerHTML, so input can never become markup.
+function addLine(parent, text, color, gap)
+{
+    let line = ce('div');
+    line.textContent = text;
+
+    if (color)
+    {
+        line.style.color = color;
+    }
+
+    if (gap)
+    {
+        line.style.marginTop = '10px';
+    }
+
+    parent.append(line);
+}
+
+function updateReadout(a, b, words, matches, busData, stateWord)
+{
+    let readout = ge('readout');
+
+    if (!readout)
+    {
+        return;
+    }
+
+    readout.replaceChildren();
+
+    let meanings = matches.map(function(m) { return m.meaning; });
+    let hex = stateWord.toString(16).toUpperCase().padStart(4, '0');
+    let passed = testProblems.length === 0;
+
+    addLine(readout, 'Self-test: ' + (passed ? 'PASS (16 gates, 8 exact opposite pairs)' : 'FAIL'), passed ? GREEN : 'rgb(255, 80, 80)');
+    addLine(readout, 'Clock Tick: ' + counter + ' | Pulse: ' + clockPulse);
+    addLine(readout, 'Input A (Live Word): ' + a);
+    addLine(readout, 'Input B (SR Flip-Flop Latch): ' + b);
+    addLine(readout, 'Recursion NAND Feedback: ' + feedbackState);
+    addLine(readout, 'Gate state word: 0x' + hex + ' | Events logged: ' + eventLog.length + '/' + MAX_LOG_ENTRIES);
+    addLine(readout, 'Words: ' + (words.length > 0 ? words.slice(0, 12).join(', ') : 'none'));
+    addLine(readout, 'Meanings: ' + (meanings.length > 0 ? meanings.join(', ') : 'none'));
+    addLine(readout, 'Tri-State Bus Output: ' + busData.activeMessage, CYAN, true);
+    addLine(readout, 'Tri-State Channels:', null, true);
+
+    for (let i = 0; i < busData.channels.length; i++)
+    {
+        let ch = busData.channels[i];
+        let isOpen = ch.output !== null;
+
+        addLine(readout, ch.gate + ': ' + (isOpen ? 'OPEN -> ' + ch.output : 'Z (null / disconnected)'), isOpen ? GREEN : 'rgb(130, 130, 130)');
+    }
+}
+
+//----//
+
+// ===
+// MAIN CYCLE (orchestrated by the clock)
+// ===
+function runSystemCycle()
+{
+    try
+    {
+        let words = tokenizeWords(listenForText('textInput'));
+        let matches = findKnownWords(words);
+
+        let setSignal = matches.length > 0 ? 1 : 0;
+        let resetSignal = checkResetSignal(words);
+
+        memoryLatch = flipFlop(memoryLatch, setSignal, resetSignal);
+
+        let a = setSignal;
+        let b = memoryLatch;
+
+        feedbackState = recursionCycle(a, feedbackState);
+
+        let results = evaluate16Gates(a, b);
+        let stateWord = packState(results);
+        let busData = evaluateTriStateBus(a, b);
+
+        logEvent(counter, a, b, stateWord, words);
+        renderDiagram(a, b, results, clockPulse, feedbackState);
+        updateReadout(a, b, words, matches, busData, stateWord);
+    }
+    catch (error)
+    {
+        // Fail closed: stop the clock and say exactly what went wrong.
+        stopClock();
+
+        let readout = ge('readout');
+
+        if (readout)
+        {
+            readout.replaceChildren();
+            addLine(readout, 'Stopped: ' + error.message, 'rgb(255, 80, 80)');
+        }
+    }
+}
+
+function whenLoaded()
+{
+    makeInterface();
+
+    testProblems = selfTest();
+
+    if (testProblems.length > 0)
+    {
+        let readout = ge('readout');
+
+        for (let i = 0; i < testProblems.length; i++)
+        {
+            addLine(readout, 'Self-test failed: ' + testProblems[i], 'rgb(255, 80, 80)');
+        }
+
+        return;
+    }
+
+    runSystemCycle();
+    startClock(frameDuration);
+}
+
+window.addEventListener('load', whenLoaded);
+
+</script>
+
+</head>
+
+<body>
+
+</body>
+
+</html>
